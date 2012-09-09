@@ -1,11 +1,11 @@
 package me.cnaude.plugin.MuteManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class MMLoop {
 
@@ -22,16 +22,22 @@ public class MMLoop {
     class muteTask extends TimerTask {
 
         @Override
-        public void run() {            
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                String pName = player.getName();            
+        public void run() {  
+            ArrayList al = new ArrayList();            
+            Set st = plugin.mList.keySet();
+            Iterator itr = st.iterator();
+            while(itr.hasNext()) {                
+                String pName = (String)itr.next();                    
                 if (plugin.mList.containsKey(pName)) {
                     long curTime = System.currentTimeMillis();
                     long expTime = plugin.mList.get(pName);
-                    if (expTime <= curTime) {                        
-                        plugin.unMutePlayer(player);                        
+                    if (expTime <= curTime) {                                                
+                        al.add(pName);
                     } 
                 }
+            }
+            for (Object pName : al) {
+                plugin.unMutePlayer((String)pName); 
             }
         }
     }

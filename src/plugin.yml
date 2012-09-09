@@ -1,18 +1,18 @@
 name: MuteManager
 main: me.cnaude.plugin.MuteManager.MM
-version: 0.1.0
-description: Tame those mobs!
+version: 0.3.0
+description: Mute those players!
 
 commands:
     mute:
         description: Mute a player
-        usage: /mute [player] [minutes]
-        permission: mutemanager.mute        
+        usage: /mute [player] ([minutes])     
     unmute:
         description: Unmute a player
         usage: /unmute [player]
-        permission: mutemanager.unmute
-          
+    mutelist:
+        description: List muted players
+        usage: /mutelist
 permissions: 
     mutemanager.mute:
         description: Gives player access to /mute.
@@ -20,4 +20,6 @@ permissions:
     mutemanager.unmute:
         description: Gives player access to /unmute.
         default: false 
-        
+    mutemanager.mutelist:
+        description: Gives player access to /mutelist.
+        default: false         

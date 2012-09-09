@@ -5,6 +5,8 @@
 package me.cnaude.plugin.MuteManager;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -24,32 +26,34 @@ public class MMCommandMute implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        if (sender instanceof Player) {
+            if (!sender.hasPermission("mutemanager.mute")) {
+                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                return true;
+            }
+        }
+
+        int muteTime;
+        
         if (args.length == 2) {
-            Player player = Bukkit.getPlayerExact(args[0]);
-            
-            if (player == null || (sender instanceof Player && !((Player) sender).canSee(player))) {
-                sender.sendMessage("There's no player by that name online.");
-            } else {
-                int muteTime;
-                try {
-                    muteTime = Integer.parseInt(args[1]);
-                    plugin.mutePlayer(player, muteTime, sender);
-                } catch (NumberFormatException nf) {
-                    return false;
-                }
+            try {
+                muteTime = Integer.parseInt(args[1]);
+            } catch (NumberFormatException nf) {
+                return false;
             }
-            return true;
         } else if (args.length == 1) {
-            Player player = Bukkit.getPlayerExact(args[0]);
-            
-            if (player == null || (sender instanceof Player && !((Player) sender).canSee(player))) {
-                sender.sendMessage("There's no player by that name online.");
-            } else {
-                plugin.mutePlayer(player, plugin.getMConfig().defaultTime(), sender);
-            }
-            return true;
+            muteTime = plugin.getMConfig().defaultTime();
         } else {
             return false;
         }
+        
+        Player player = Bukkit.getPlayerExact(args[0]);  
+        if (player == null) {
+            sender.sendMessage("There's no player by that name online.");
+        } else {
+            plugin.mutePlayer(player, muteTime, sender);
+        }
+        return true;
+
     }
 }
