@@ -1,0 +1,6 @@
+# Global settings.
+Global:
+  # Whether or not to notify the player when their items are gathered and restored.
+  Notify: true
+  # Default mute time in minutes when not specified in mute command.
+  DefaultTime: 5
