@@ -1,7 +1,6 @@
 package me.cnaude.plugin.MuteManager;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Timer;
@@ -23,7 +22,7 @@ public class MMLoop {
 
         @Override
         public void run() {  
-            ArrayList al = new ArrayList();            
+            ArrayList unMuteList = new ArrayList();            
             Set st = plugin.mList.keySet();
             Iterator itr = st.iterator();
             while(itr.hasNext()) {                
@@ -32,13 +31,14 @@ public class MMLoop {
                     long curTime = System.currentTimeMillis();
                     long expTime = plugin.mList.get(pName);
                     if (expTime <= curTime) {                                                
-                        al.add(pName);
+                        unMuteList.add(pName);
                     } 
                 }
             }
-            for (Object pName : al) {
+            for (Object pName : unMuteList) {
                 plugin.unMutePlayer((String)pName); 
             }
+            unMuteList.clear();
         }
     }
 

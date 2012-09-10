@@ -6,7 +6,6 @@ package me.cnaude.plugin.MuteManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -33,11 +32,11 @@ public class MMCommandMute implements CommandExecutor {
             }
         }
 
-        int muteTime;
+        long muteTime;
         
         if (args.length == 2) {
             try {
-                muteTime = Integer.parseInt(args[1]);
+                muteTime = Long.parseLong(args[1]);
             } catch (NumberFormatException nf) {
                 return false;
             }
@@ -47,11 +46,18 @@ public class MMCommandMute implements CommandExecutor {
             return false;
         }
         
-        Player player = Bukkit.getPlayerExact(args[0]);  
-        if (player == null) {
-            sender.sendMessage("There's no player by that name online.");
+        String pName = args[0];
+        if (pName.equals("*")) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                plugin.mutePlayer(player, muteTime, sender);
+            }
         } else {
-            plugin.mutePlayer(player, muteTime, sender);
+            Player player = Bukkit.getPlayerExact(pName);  
+            if (player == null) {
+                sender.sendMessage("There's no player by that name online.");
+            } else {
+                plugin.mutePlayer(player, muteTime, sender);
+            }
         }
         return true;
 

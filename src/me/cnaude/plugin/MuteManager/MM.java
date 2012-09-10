@@ -77,16 +77,16 @@ public class MM extends JavaPlugin {
         return config;
     }
 
-    public void mutePlayer(Player player, Integer muteTime, CommandSender sender) {
+    public void mutePlayer(Player player, Long muteTime, CommandSender sender) {
         mutePlayer(player.getName(), muteTime, sender);
         player.sendMessage(ChatColor.YELLOW + "You have been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!");
     }
     
-    public void mutePlayer(OfflinePlayer player, Integer muteTime, CommandSender sender) {
+    public void mutePlayer(OfflinePlayer player, Long muteTime, CommandSender sender) {
         mutePlayer(player.getName(), muteTime, sender);
     }
     
-    public void mutePlayer(String pName, Integer muteTime, CommandSender sender) {        
+    public void mutePlayer(String pName, Long muteTime, CommandSender sender) {        
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         mList.put(pName, expTime);        
@@ -98,35 +98,23 @@ public class MM extends JavaPlugin {
         }
     }
     
-    public void unMutePlayer(Player player, CommandSender sender) {        
-        String pName = player.getName();
-        String senderMessage = ChatColor.AQUA + player.getName() + ChatColor.YELLOW + " has been unmuted!";
-        if (mList.containsKey(pName)) {
-            mList.remove(pName);
-            player.sendMessage(ChatColor.YELLOW + "You are no longer muted!");
-            if (config.shouldNotify()) {
-               getServer().broadcastMessage(senderMessage);
-            } else {
-                sender.sendMessage(senderMessage);
-                logInfo(player.getName() + " has been unmuted!");
-            }
-        }        
-    }
-    
     public void unMutePlayer(String pName, CommandSender sender) { 
         Player player = Bukkit.getPlayerExact(pName);
-        
+        if (player != null) {
+            unMutePlayer(pName, sender);
+        } else {
+            sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName);
+        }
+    }
+    
+    public void unMutePlayer(Player player, CommandSender sender) { 
+        String pName = player.getName();
         if (unMutePlayer(pName)) {
             if (player instanceof Player) {
                 player.sendMessage(ChatColor.YELLOW + "You are no longer muted!");
             }
             String senderMessage = ChatColor.AQUA + player.getName() + ChatColor.YELLOW + " has been unmuted!";
-            if (config.shouldNotify()) {
-               getServer().broadcastMessage(senderMessage);
-            } else {
-                sender.sendMessage(senderMessage);
-                logInfo(player.getName() + " has been unmuted!");
-            }
+            sender.sendMessage(senderMessage);
         } else {
             sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName);
         }                                   
@@ -135,6 +123,11 @@ public class MM extends JavaPlugin {
     public boolean unMutePlayer(String pName) {
         if (mList.containsKey(pName)) {
             mList.remove(pName);
+            if (config.shouldNotify()) {
+               getServer().broadcastMessage(ChatColor.AQUA + pName+ ChatColor.YELLOW + " has been unmuted!");
+            } else {
+                logInfo(pName + " has been unmuted!");
+            }
             return true;
         } else {
             return false;
@@ -148,8 +141,7 @@ public class MM extends JavaPlugin {
             long expTime = mList.get(pName);
             if (expTime > curTime) {
                 return true;
-            } else {
-                unMutePlayer(pName);
+            } else {                
                 return false;
             }
         } else {

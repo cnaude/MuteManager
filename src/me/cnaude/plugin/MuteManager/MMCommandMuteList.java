@@ -4,7 +4,6 @@
  */
 package me.cnaude.plugin.MuteManager;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,8 +30,13 @@ public class MMCommandMuteList implements CommandExecutor {
                 return true;
             }
         }
-        for (String pName : plugin.mList.keySet()) {
-            sender.sendMessage(ChatColor.AQUA + pName + ChatColor.WHITE + ": " + ChatColor.YELLOW + plugin.expireTime(pName));
+        if (plugin.mList.isEmpty()) {
+            sender.sendMessage(ChatColor.YELLOW + "[Mute List] [" + ChatColor.WHITE + 0 + ChatColor.YELLOW + "]");
+        } else {
+            sender.sendMessage(ChatColor.YELLOW + "[Mute List] [" + ChatColor.WHITE + plugin.mList.size() + ChatColor.YELLOW + "]");
+            for (String pName : plugin.mList.keySet()) {
+                sender.sendMessage(ChatColor.AQUA + pName + ChatColor.WHITE + ": " + ChatColor.YELLOW + plugin.expireTime(pName));            
+            }
         }
         return true;
     }

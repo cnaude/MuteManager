@@ -18,7 +18,7 @@ public final class MMConfig {
     private static final String DEFAULT_TIME             = "Global.DefaultTime";
     
     private boolean shouldNotify;
-    private int defaultTime;
+    private long defaultTime;
     
     public MMConfig(MM instance) {
         plugin = instance;  
@@ -35,7 +35,7 @@ public final class MMConfig {
         return shouldNotify;
     }
     
-    public Integer defaultTime() {
+    public Long defaultTime() {
         return defaultTime;
     }
     

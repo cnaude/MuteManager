@@ -29,6 +29,8 @@ public class MMListeners implements Listener {
         if (plugin.isMuted(player)) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Expires in " + plugin.expireTime(player));
+        } else {
+            plugin.unMutePlayer(player.getName());
         }
     }
 }
