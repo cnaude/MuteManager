@@ -16,9 +16,13 @@ public final class MMConfig {
     
     private static final String GLOBAL_NOTIFY            = "Global.Notify";
     private static final String DEFAULT_TIME             = "Global.DefaultTime";
+    private static final String ADMIN_LISTEN             = "Global.AdminListen";
+    private static final String BROADCAST_NODE           = "Global.BroadcastNode";
     
     private boolean shouldNotify;
     private long defaultTime;
+    private boolean adminListen;
+    private String broadcastNode;    
     
     public MMConfig(MM instance) {
         plugin = instance;  
@@ -27,8 +31,10 @@ public final class MMConfig {
     }
     
     public void loadValues() {               
-        shouldNotify = config.getBoolean(GLOBAL_NOTIFY, true);                
-        defaultTime = config.getInt(DEFAULT_TIME, 5);                
+        shouldNotify  = config.getBoolean(GLOBAL_NOTIFY, true);                
+        defaultTime   = config.getInt(DEFAULT_TIME, 5);                
+        adminListen   = config.getBoolean(ADMIN_LISTEN, false);
+        broadcastNode = config.getString(BROADCAST_NODE, "mutemanager.listen");
     }
     
     public boolean shouldNotify() {
@@ -37,6 +43,14 @@ public final class MMConfig {
     
     public Long defaultTime() {
         return defaultTime;
+    }
+    
+    public boolean adminListen() {
+        return adminListen;
+    }
+    
+    public String broadcastNode() {
+        return broadcastNode;
     }
     
 }

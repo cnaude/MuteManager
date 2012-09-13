@@ -78,56 +78,41 @@ public class MM extends JavaPlugin {
     }
 
     public void mutePlayer(Player player, Long muteTime, CommandSender sender) {
-        mutePlayer(player.getName(), muteTime, sender);
-        player.sendMessage(ChatColor.YELLOW + "You have been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!");
-    }
-    
-    public void mutePlayer(OfflinePlayer player, Long muteTime, CommandSender sender) {
-        mutePlayer(player.getName(), muteTime, sender);
-    }
-    
-    public void mutePlayer(String pName, Long muteTime, CommandSender sender) {        
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
-        mList.put(pName, expTime);        
+        String pName = player.getName();
+        mList.put(pName, expTime);
         String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " has been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!";
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
             sender.sendMessage(senderMessage);
+            player.sendMessage(ChatColor.YELLOW + "You have been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!");
         }
     }
-    
-    public void unMutePlayer(String pName, CommandSender sender) { 
-        Player player = Bukkit.getPlayerExact(pName);
-        if (player != null) {
-            unMutePlayer(pName, sender);
+
+    public void unMutePlayer(String pName, CommandSender sender) {
+        Player player = Bukkit.getServer().getPlayerExact(pName);
+        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " has been unmuted!";
+        boolean success = unMutePlayer(pName);
+        if (success) {
+            if (config.shouldNotify()) {
+                getServer().broadcastMessage(senderMessage);
+            } else {
+                logInfo(pName + " has been unmuted!");
+                if (player != null) {                    
+                    player.sendMessage(ChatColor.YELLOW + "You have been unmuted!");
+                } 
+                sender.sendMessage(senderMessage);
+            }            
         } else {
             sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName);
         }
     }
-    
-    public void unMutePlayer(Player player, CommandSender sender) { 
-        String pName = player.getName();
-        if (unMutePlayer(pName)) {
-            if (player instanceof Player) {
-                player.sendMessage(ChatColor.YELLOW + "You are no longer muted!");
-            }
-            String senderMessage = ChatColor.AQUA + player.getName() + ChatColor.YELLOW + " has been unmuted!";
-            sender.sendMessage(senderMessage);
-        } else {
-            sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName);
-        }                                   
-    }
-    
+
     public boolean unMutePlayer(String pName) {
         if (mList.containsKey(pName)) {
             mList.remove(pName);
-            if (config.shouldNotify()) {
-               getServer().broadcastMessage(ChatColor.AQUA + pName+ ChatColor.YELLOW + " has been unmuted!");
-            } else {
-                logInfo(pName + " has been unmuted!");
-            }
             return true;
         } else {
             return false;
@@ -141,7 +126,7 @@ public class MM extends JavaPlugin {
             long expTime = mList.get(pName);
             if (expTime > curTime) {
                 return true;
-            } else {                
+            } else {
                 return false;
             }
         } else {
@@ -155,7 +140,7 @@ public class MM extends JavaPlugin {
     }
 
     public String expireTime(String pName) {
-        DecimalFormat formatter = new DecimalFormat("0.00");                
+        DecimalFormat formatter = new DecimalFormat("0.00");
         if (mList.containsKey(pName)) {
             long curTime = System.currentTimeMillis();
             long expTime = mList.get(pName);
@@ -163,6 +148,6 @@ public class MM extends JavaPlugin {
             return (formatter.format(diffTime)) + " minutes";
         } else {
             return "0 seconds.";
-        }        
+        }
     }
 }

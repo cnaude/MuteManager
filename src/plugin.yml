@@ -1,6 +1,6 @@
 name: MuteManager
 main: me.cnaude.plugin.MuteManager.MM
-version: 0.3.0
+version: 0.5.0
 description: Mute those players!
 
 commands:
@@ -22,4 +22,7 @@ permissions:
         default: false 
     mutemanager.mutelist:
         description: Gives player access to /mutelist.
+        default: false
+    mutemanager.listen:
+        description: If AdminNotify is true users with this node can read muted messages.
         default: false         

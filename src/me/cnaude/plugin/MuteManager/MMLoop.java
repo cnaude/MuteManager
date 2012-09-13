@@ -23,10 +23,7 @@ public class MMLoop {
         @Override
         public void run() {  
             ArrayList unMuteList = new ArrayList();            
-            Set st = plugin.mList.keySet();
-            Iterator itr = st.iterator();
-            while(itr.hasNext()) {                
-                String pName = (String)itr.next();                    
+            for (String pName : plugin.mList.keySet()) {        
                 if (plugin.mList.containsKey(pName)) {
                     long curTime = System.currentTimeMillis();
                     long expTime = plugin.mList.get(pName);

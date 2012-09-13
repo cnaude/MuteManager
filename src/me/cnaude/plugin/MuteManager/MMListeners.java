@@ -4,6 +4,7 @@
  */
 package me.cnaude.plugin.MuteManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,6 +30,12 @@ public class MMListeners implements Listener {
         if (plugin.isMuted(player)) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Expires in " + plugin.expireTime(player));
+            if (plugin.getMConfig().adminListen()) {
+                String bCastMessage = ChatColor.YELLOW + "[" + ChatColor.RED + "Mute" + ChatColor.YELLOW + "]";
+                bCastMessage = bCastMessage + "<" + player.getName() + "> ";
+                bCastMessage = bCastMessage + ChatColor.GRAY + event.getMessage();
+                Bukkit.getServer().broadcast(bCastMessage, plugin.getMConfig().broadcastNode());
+            }
         } else {
             plugin.unMutePlayer(player.getName());
         }

@@ -4,3 +4,8 @@ Global:
   Notify: true
   # Default mute time in minutes when not specified in mute command.
   DefaultTime: 5
+  # Allow admins to see the muted messages
+  AdminListen: false
+  # Permission node for admins when AdminListen is enabled
+  BroadcastNode: mutemanager.listen
+  
