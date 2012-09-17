@@ -2,7 +2,7 @@
 Global:
   # Broadcast to everyone when a player is muted or unmuted.
   Notify: true
-  # Default mute time in minutes when not specified in mute command.
+  # Default mute time in minutes when not specified in mute command. (52594900 = perm)
   DefaultTime: 5
   # Allow admins to see the muted messages
   AdminListen: false

@@ -35,10 +35,14 @@ public class MMCommandMute implements CommandExecutor {
         long muteTime;
         
         if (args.length == 2) {
-            try {
-                muteTime = Long.parseLong(args[1]);
-            } catch (NumberFormatException nf) {
-                return false;
+            if (args[1].equalsIgnoreCase("perm")) {
+                muteTime = 52594900; // 100 Years of minutes.
+            } else {
+                try {
+                    muteTime = Long.parseLong(args[1]);
+                } catch (NumberFormatException nf) {
+                    return false;
+                }
             }
         } else if (args.length == 1) {
             muteTime = plugin.getMConfig().defaultTime();

@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -145,6 +144,21 @@ public class MM extends JavaPlugin {
             long curTime = System.currentTimeMillis();
             long expTime = mList.get(pName);
             float diffTime = ((expTime - curTime) / 1000f) / 60f;
+            if (diffTime > 5256000) {
+                return "forever";
+            }
+            if (diffTime > 525600) {
+                return (formatter.format(diffTime / 525600f)) + " years";
+            }
+            if (diffTime > 1440) {
+                return (formatter.format(diffTime / 1440f)) + " days";
+            }
+            if (diffTime > 60) {
+                return (formatter.format(diffTime / 60f)) + " hours";
+            }
+            if (diffTime < 1f) {
+                return (formatter.format(diffTime * 60f)) + " seconds";
+            }
             return (formatter.format(diffTime)) + " minutes";
         } else {
             return "0 seconds.";
