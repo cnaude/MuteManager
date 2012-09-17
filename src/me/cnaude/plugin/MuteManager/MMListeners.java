@@ -29,9 +29,9 @@ public class MMListeners implements Listener {
         Player player = event.getPlayer();
         if (plugin.isMuted(player)) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Expires in " + plugin.expireTime(player));
+            player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Duration: " + ChatColor.WHITE + plugin.expireTime(player));
             if (plugin.getMConfig().adminListen()) {
-                String bCastMessage = ChatColor.YELLOW + "[" + ChatColor.RED + "Mute" + ChatColor.YELLOW + "]";
+                String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";
                 bCastMessage = bCastMessage + "<" + player.getName() + "> ";
                 bCastMessage = bCastMessage + ChatColor.GRAY + event.getMessage();
                 Bukkit.getServer().broadcast(bCastMessage, plugin.getMConfig().broadcastNode());

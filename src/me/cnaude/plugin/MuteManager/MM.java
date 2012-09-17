@@ -81,12 +81,12 @@ public class MM extends JavaPlugin {
         long expTime = curTime + (muteTime * 60 * 1000);
         String pName = player.getName();
         mList.put(pName, expTime);
-        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " has been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!";
+        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
             sender.sendMessage(senderMessage);
-            player.sendMessage(ChatColor.YELLOW + "You have been muted for " + ChatColor.WHITE + muteTime + ChatColor.YELLOW + " minutes!");
+            player.sendMessage(ChatColor.YELLOW + "You have been muted! Duration: " + ChatColor.WHITE + expireTime(pName));
         }
     }
 
@@ -105,7 +105,7 @@ public class MM extends JavaPlugin {
                 sender.sendMessage(senderMessage);
             }            
         } else {
-            sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName);
+            sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName + ChatColor.YELLOW + ".");
         }
     }
 
