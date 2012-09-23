@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 /**
  *
@@ -39,5 +40,21 @@ public class MMListeners implements Listener {
         } else {
             plugin.unMutePlayer(player.getName());
         }
+    }
+    
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerCommandPreprocessEvent (PlayerCommandPreprocessEvent  event) {
+        Player player = event.getPlayer();
+        String attemptedCmd = event.getMessage().split(" ")[0];        
+        if (plugin.isMuted(player) && plugin.isBlockedCmd(attemptedCmd)) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Duration: " + ChatColor.WHITE + plugin.expireTime(player));
+            if (plugin.getMConfig().adminListen()) {
+                String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";
+                bCastMessage = bCastMessage + "<" + player.getName() + "> ";
+                bCastMessage = bCastMessage + ChatColor.GRAY + event.getMessage();
+                Bukkit.getServer().broadcast(bCastMessage, plugin.getMConfig().broadcastNode());
+            }
+        } 
     }
 }

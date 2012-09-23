@@ -137,6 +137,10 @@ public class MM extends JavaPlugin {
         String pName = player.getName();
         return expireTime(pName);
     }
+    
+    public boolean isBlockedCmd(String cmd) {
+        return getMConfig().blockedCmds().contains(cmd);
+    }
 
     public String expireTime(String pName) {
         DecimalFormat formatter = new DecimalFormat("0.00");

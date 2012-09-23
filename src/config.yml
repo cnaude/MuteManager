@@ -8,4 +8,9 @@ Global:
   AdminListen: false
   # Permission node for admins when AdminListen is enabled
   BroadcastNode: mutemanager.listen
-  
+  # Block optional commands when muted
+  BlockCommands: false
+  # Commands that are blocked when a player is muted
+  Commands:
+    - /msg
+    - /tell
