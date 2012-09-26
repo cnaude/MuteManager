@@ -89,6 +89,18 @@ public class MM extends JavaPlugin {
             player.sendMessage(ChatColor.YELLOW + "You have been muted! Duration: " + ChatColor.WHITE + expireTime(pName));
         }
     }
+    
+    public void mutePlayer(String pName, Long muteTime, CommandSender sender) {
+        long curTime = System.currentTimeMillis();
+        long expTime = curTime + (muteTime * 60 * 1000);
+        mList.put(pName, expTime);
+        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
+        if (config.shouldNotify()) {
+            getServer().broadcastMessage(senderMessage);
+        } else {
+            sender.sendMessage(senderMessage);            
+        }
+    }
 
     public void unMutePlayer(String pName, CommandSender sender) {
         Player player = Bukkit.getServer().getPlayerExact(pName);

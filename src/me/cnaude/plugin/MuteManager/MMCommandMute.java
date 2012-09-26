@@ -58,7 +58,11 @@ public class MMCommandMute implements CommandExecutor {
         } else {
             Player player = Bukkit.getPlayerExact(pName);  
             if (player == null) {
-                sender.sendMessage("There's no player by that name online.");
+                if (plugin.getMConfig().allowOfflineMute()) {
+                    plugin.mutePlayer(pName, muteTime, sender);
+                } else {
+                    sender.sendMessage("There's no player by that name online.");
+                }
             } else {
                 plugin.mutePlayer(player, muteTime, sender);
             }

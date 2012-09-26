@@ -22,12 +22,14 @@ public final class MMConfig {
     private static final String BROADCAST_NODE           = "Global.BroadcastNode";
     private static final String COMMANDS                 = "Global.Commands";
     private static final String BLOCK_CMDS               = "Global.BlockCommands";
+    private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
     
     private boolean shouldNotify;
     private long defaultTime;
     private boolean adminListen;
     private String broadcastNode;   
     private List<String> blockedCommands = Arrays.asList();    
+    private boolean allowOfflineMute;
     
     public MMConfig(MM instance) {
         plugin = instance;  
@@ -43,6 +45,7 @@ public final class MMConfig {
         if (config.getBoolean(BLOCK_CMDS, false)) {
             blockedCommands = config.getStringList(COMMANDS);
         } 
+        allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false);                
     }
     
     public boolean shouldNotify() {
@@ -64,5 +67,8 @@ public final class MMConfig {
     public List<String> blockedCmds() {
         return blockedCommands;
     }
-    
+
+    public boolean allowOfflineMute() {
+        return allowOfflineMute;
+    }
 }
