@@ -1,8 +1,6 @@
 package me.cnaude.plugin.MuteManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 

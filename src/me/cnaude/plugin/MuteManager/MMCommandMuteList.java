@@ -35,7 +35,9 @@ public class MMCommandMuteList implements CommandExecutor {
         } else {
             sender.sendMessage(ChatColor.YELLOW + "[Mute List] [" + ChatColor.WHITE + plugin.mList.size() + ChatColor.YELLOW + "]");
             for (String pName : plugin.mList.keySet()) {
-                sender.sendMessage(ChatColor.AQUA + pName + ChatColor.WHITE + ": " + ChatColor.YELLOW + plugin.expireTime(pName));            
+                sender.sendMessage(ChatColor.AQUA + pName + ChatColor.WHITE + ": " 
+                        + ChatColor.YELLOW + plugin.expireTime(pName)
+                        + ChatColor.RED + " Reason: " + plugin.mReason.get(pName));            
             }
         }
         return true;

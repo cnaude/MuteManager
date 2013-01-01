@@ -22,6 +22,7 @@ public class MM extends JavaPlugin {
 
     // Mute list is stored as playername and milliseconds
     public HashMap<String, Long> mList = new HashMap<String, Long>();
+    public HashMap<String, String> mReason = new HashMap<String, String>();
     private final MMListeners mmListeners = new MMListeners(this);
     public boolean configLoaded = false;
     private static MMConfig config;
@@ -35,6 +36,7 @@ public class MM extends JavaPlugin {
     public void onEnable() {
         loadConfig();
         mFile.loadMuteList();
+        mFile.loadMuteReasonList();
         getCommand("mute").setExecutor(new MMCommandMute(this));
         getCommand("unmute").setExecutor(new MMCommandUnMute(this));
         getCommand("mutelist").setExecutor(new MMCommandMuteList(this));
@@ -46,7 +48,9 @@ public class MM extends JavaPlugin {
     public void onDisable() {
         mmLoop.end();
         mFile.saveMuteList();
+        mFile.saveMuteReasonList();
         mList.clear();
+        mReason.clear();
     }
 
     void loadConfig() {
@@ -76,12 +80,16 @@ public class MM extends JavaPlugin {
         return config;
     }
 
-    public void mutePlayer(Player player, Long muteTime, CommandSender sender) {
+    public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         String pName = player.getName();
         mList.put(pName, expTime);
+        mReason.put(pName, reason);
         String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
+        if (!reason.isEmpty()) {
+            senderMessage = senderMessage + ChatColor.YELLOW + ". Reason: " + ChatColor.RED + reason;
+        }
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
@@ -90,11 +98,15 @@ public class MM extends JavaPlugin {
         }
     }
     
-    public void mutePlayer(String pName, Long muteTime, CommandSender sender) {
+    public void mutePlayer(String pName, Long muteTime, CommandSender sender, String reason) {
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         mList.put(pName, expTime);
+        mReason.put(pName, reason);
         String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
+        if (!reason.isEmpty()) {
+            senderMessage = senderMessage + ChatColor.YELLOW + ". Reason: " + ChatColor.RED + reason;
+        }
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
@@ -122,6 +134,9 @@ public class MM extends JavaPlugin {
     }
 
     public boolean unMutePlayer(String pName) {
+        if (mReason.containsKey(pName)) {
+            mReason.remove(pName);
+        } 
         if (mList.containsKey(pName)) {
             mList.remove(pName);
             return true;

@@ -34,7 +34,16 @@ public class MMCommandMute implements CommandExecutor {
 
         long muteTime;
         
-        if (args.length == 2) {
+        String reason = "";
+        if (args.length > 2) {
+            for (int x = 2; x < args.length; x++) {
+                reason = reason + " " + args[x];
+            }
+        }
+        if (reason.isEmpty()) {
+            reason = plugin.getMConfig().defaultReason();
+        }
+        if (args.length >= 2) {
             if (args[1].equalsIgnoreCase("perm")) {
                 muteTime = 52594900; // 100 Years of minutes.
             } else {
@@ -53,18 +62,18 @@ public class MMCommandMute implements CommandExecutor {
         String pName = args[0];
         if (pName.equals("*")) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                plugin.mutePlayer(player, muteTime, sender);
+                plugin.mutePlayer(player, muteTime, sender, reason);
             }
         } else {
             Player player = Bukkit.getPlayerExact(pName);  
             if (player == null) {
                 if (plugin.getMConfig().allowOfflineMute()) {
-                    plugin.mutePlayer(pName, muteTime, sender);
+                    plugin.mutePlayer(pName, muteTime, sender, reason);
                 } else {
                     sender.sendMessage("There's no player by that name online.");
                 }
             } else {
-                plugin.mutePlayer(player, muteTime, sender);
+                plugin.mutePlayer(player, muteTime, sender, reason);
             }
         }
         return true;

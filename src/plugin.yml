@@ -1,12 +1,14 @@
 name: MuteManager
 main: me.cnaude.plugin.MuteManager.MM
-version: 0.8.0
+version: 0.9.3
 description: Mute those players!
-
+author: Chris Naude
+loadbefore: 
+  - Essentials
 commands:
     mute:
         description: Mute a player
-        usage: /mute [player] ([minutes|perm])     
+        usage: /mute [player] ([minutes|perm]) ([reason])    
     unmute:
         description: Unmute a player
         usage: /unmute [player]

@@ -5,9 +5,6 @@
 package me.cnaude.plugin.MuteManager;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
