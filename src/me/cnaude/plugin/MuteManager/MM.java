@@ -25,7 +25,7 @@ public class MM extends JavaPlugin {
     public HashMap<String, String> mReason = new HashMap<String, String>();
     private final MMListeners mmListeners = new MMListeners(this);
     public boolean configLoaded = false;
-    private static MMConfig config;
+    public static MMConfig config;
     public static final String PLUGIN_NAME = "MuteManager";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Logger.getLogger("Minecraft");
@@ -86,15 +86,19 @@ public class MM extends JavaPlugin {
         String pName = player.getName();
         mList.put(pName, expTime);
         mReason.put(pName, reason);
-        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
+        String senderMessage = config.msgPlayerNowMuted();
+        senderMessage = senderMessage.replaceAll("%PLAYER%", pName);
+        senderMessage = senderMessage.replaceAll("%DURATION%", expireTime(pName));        
         if (!reason.isEmpty()) {
-            senderMessage = senderMessage + ChatColor.YELLOW + ". Reason: " + ChatColor.RED + reason;
+            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
         }
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
-            sender.sendMessage(senderMessage);
-            player.sendMessage(ChatColor.YELLOW + "You have been muted! Duration: " + ChatColor.WHITE + expireTime(pName));
+            sender.sendMessage(senderMessage);            
+            if (!config.msgYouHaveBeenMuted().isEmpty()) {
+                player.sendMessage(config.msgYouHaveBeenMuted().replaceAll("%DURATION%", expireTime(pName)));
+            }
         }
     }
     
@@ -102,10 +106,12 @@ public class MM extends JavaPlugin {
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         mList.put(pName, expTime);
-        mReason.put(pName, reason);
-        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " is now muted! Duration: " + ChatColor.WHITE + expireTime(pName);
+        mReason.put(pName, reason);        
+        String senderMessage = config.msgPlayerNowMuted();
+        senderMessage = senderMessage.replaceAll("%PLAYER%", pName);
+        senderMessage = senderMessage.replaceAll("%DURATION%", expireTime(pName));        
         if (!reason.isEmpty()) {
-            senderMessage = senderMessage + ChatColor.YELLOW + ". Reason: " + ChatColor.RED + reason;
+            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
         }
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
@@ -116,7 +122,7 @@ public class MM extends JavaPlugin {
 
     public void unMutePlayer(String pName, CommandSender sender) {
         Player player = Bukkit.getServer().getPlayerExact(pName);
-        String senderMessage = ChatColor.AQUA + pName + ChatColor.YELLOW + " has been unmuted!";
+        String senderMessage = config.msgSenderUnMuted().replaceAll("%PLAYER%", pName);
         boolean success = unMutePlayer(pName);
         if (success) {
             if (config.shouldNotify()) {
@@ -124,16 +130,22 @@ public class MM extends JavaPlugin {
             } else {
                 logInfo(pName + " has been unmuted!");
                 if (player != null) {                    
-                    player.sendMessage(ChatColor.YELLOW + "You have been unmuted!");
+                    player.sendMessage(config.msgYouHaveBeenMuted());
                 } 
                 sender.sendMessage(senderMessage);
             }            
         } else {
-            sender.sendMessage(ChatColor.YELLOW + "Unable to unmute " + ChatColor.AQUA + pName + ChatColor.YELLOW + ".");
+            sender.sendMessage(config.msgUnableToUnMute().replaceAll("%PLAYER%", pName));
         }
     }
 
-    public boolean unMutePlayer(String pName) {
+    public boolean unMutePlayer(String p) {
+        String pName = p;
+        for (String s : mList.keySet()) {
+            if (s.equalsIgnoreCase(s)) {
+                pName = s;
+            }
+        }
         if (mReason.containsKey(pName)) {
             mReason.remove(pName);
         } 
@@ -176,23 +188,42 @@ public class MM extends JavaPlugin {
             long expTime = mList.get(pName);
             float diffTime = ((expTime - curTime) / 1000f) / 60f;
             if (diffTime > 5256000) {
-                return "forever";
+                return config.msgForever();
             }
             if (diffTime > 525600) {
-                return (formatter.format(diffTime / 525600f)) + " years";
+                return (formatter.format(diffTime / 525600f)) + " " + config.msgYears();
             }
             if (diffTime > 1440) {
-                return (formatter.format(diffTime / 1440f)) + " days";
+                return (formatter.format(diffTime / 1440f)) + " " + config.msgDays();
             }
             if (diffTime > 60) {
-                return (formatter.format(diffTime / 60f)) + " hours";
+                return (formatter.format(diffTime / 60f)) + " " + config.msgHOurs();
             }
             if (diffTime < 1f) {
-                return (formatter.format(diffTime * 60f)) + " seconds";
+                return (formatter.format(diffTime * 60f)) + " " + config.msgSeconds();
             }
-            return (formatter.format(diffTime)) + " minutes";
+            return (formatter.format(diffTime)) + " " + config.msgMinutes();
         } else {
-            return "0 seconds.";
+            return config.msgZeroSeconds();
         }
+    }
+    
+    public Player lookupPlayer(String pName) {
+        Player player;
+        if (config.reqFullName()) {
+            player = Bukkit.getPlayerExact(pName);
+        } else {
+            // First we attempt to get an exact match before partial match
+            player = Bukkit.getPlayerExact(pName);
+            if (player == null) {
+                for (Player pl : Bukkit.getOnlinePlayers()) {
+                    if (pl.getName().toLowerCase().startsWith(pName.toLowerCase())) {
+                        player = Bukkit.getPlayer(pName);
+                        break;
+                    }
+                }
+            }
+        }
+        return player;
     }
 }

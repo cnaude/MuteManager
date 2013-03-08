@@ -5,7 +5,6 @@
 package me.cnaude.plugin.MuteManager;
 
 import java.util.ArrayList;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,9 @@ public class MMCommandUnMute implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
             if (!sender.hasPermission("mutemanager.unmute")) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                if (!plugin.getMConfig().msgNoPerm().isEmpty()) {
+                    sender.sendMessage(plugin.getMConfig().msgNoPerm());
+                }
                 return true;
             }
         }

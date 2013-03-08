@@ -17,3 +17,18 @@ Global:
     - /msg
     - /tell
   AllowOfflineMute: false
+Messages:
+  NoPermission: '&cYou do not have permission to use this command!'
+  ZeroSeconds: 0 seconds
+  Minutes: minutes
+  Hours: hours
+  Days: days
+  Years: years
+  Forever: forever
+  UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
+  YouHaveBeenMuted: '&eYou have been muted! Duration: %DURATION%'
+  YouHaveBeenUnMuted: '&eYou have been unmuted! Duration: %DURATION%'
+  NoPlayer: 'There is no player by that name online!'
+  Reason: 'Reason'
+  PlayerNowMuted: '&b%PLAYER% &is now muted! Duration: %DURATION%'
+  PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'

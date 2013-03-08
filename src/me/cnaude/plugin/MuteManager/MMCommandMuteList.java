@@ -26,7 +26,9 @@ public class MMCommandMuteList implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
             if (!sender.hasPermission("mutemanager.mutelist")) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                if (!plugin.getMConfig().msgNoPerm().isEmpty()) {
+                    sender.sendMessage(plugin.getMConfig().msgNoPerm());
+                }
                 return true;
             }
         }

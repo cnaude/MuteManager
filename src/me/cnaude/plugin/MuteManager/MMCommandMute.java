@@ -5,7 +5,6 @@
 package me.cnaude.plugin.MuteManager;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +26,9 @@ public class MMCommandMute implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         if (sender instanceof Player) {
             if (!sender.hasPermission("mutemanager.mute")) {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to use this command!");
+                if (!plugin.getMConfig().msgNoPerm().isEmpty()) {
+                    sender.sendMessage(plugin.getMConfig().msgNoPerm());
+                }
                 return true;
             }
         }
@@ -65,12 +66,15 @@ public class MMCommandMute implements CommandExecutor {
                 plugin.mutePlayer(player, muteTime, sender, reason);
             }
         } else {
-            Player player = Bukkit.getPlayerExact(pName);  
+            Player player = Bukkit.getPlayerExact(pName); 
+            
             if (player == null) {
                 if (plugin.getMConfig().allowOfflineMute()) {
                     plugin.mutePlayer(pName, muteTime, sender, reason);
                 } else {
-                    sender.sendMessage("There's no player by that name online.");
+                    if (!plugin.getMConfig().msgNoPlayer().isEmpty()) {
+                        sender.sendMessage(plugin.getMConfig().msgNoPlayer());
+                    }
                 }
             } else {
                 plugin.mutePlayer(player, muteTime, sender, reason);
