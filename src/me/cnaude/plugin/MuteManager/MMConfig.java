@@ -42,6 +42,7 @@ public final class MMConfig {
     private static final String MSG_P_NOW_UNMUTED         = "Messages.PlayerNowUnMuted";
     private static final String MSG_NO_PLAYER             = "Messages.NoPlayer";
     private static final String MSG_REASON                = "Messages.Reason";
+    private static final String MSG_YOU_ARE_MUTED         = "Messages.YouAreMuted";
     
     
     private boolean shouldNotify;
@@ -68,6 +69,7 @@ public final class MMConfig {
     private String msgNoPlayer;
     private String msgPlayerNowMuted;
     private String msgReason;
+    private String msgYouAreMuted;
     
     public MMConfig(MM instance) {
         plugin = instance;  
@@ -102,6 +104,7 @@ public final class MMConfig {
         msgPlayerUnMuted = config.getString(MSG_P_NOW_UNMUTED);
         msgNoPlayer = config.getString(MSG_NO_PLAYER);
         msgReason = config.getString(MSG_REASON);
+        msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
                
     }
     
@@ -195,5 +198,9 @@ public final class MMConfig {
     
     public String msgReason() {
         return ChatColor.translateAlternateColorCodes(('&'), msgReason);
+    }
+    
+    public String msgYouAreMuted() {
+        return ChatColor.translateAlternateColorCodes(('&'), msgYouAreMuted);
     }
 }

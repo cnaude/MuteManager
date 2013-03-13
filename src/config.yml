@@ -21,14 +21,16 @@ Messages:
   NoPermission: '&cYou do not have permission to use this command!'
   ZeroSeconds: 0 seconds
   Minutes: minutes
+  Seconds: seconds
   Hours: hours
   Days: days
   Years: years
   Forever: forever
   UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
-  YouHaveBeenMuted: '&eYou have been muted! Duration: %DURATION%'
-  YouHaveBeenUnMuted: '&eYou have been unmuted! Duration: %DURATION%'
+  YouHaveBeenMuted: '&eYou have been muted! Duration: &a%DURATION%'
+  YouHaveBeenUnMuted: '&eYou have been unmuted!'
   NoPlayer: 'There is no player by that name online!'
   Reason: 'Reason'
-  PlayerNowMuted: '&b%PLAYER% &is now muted! Duration: %DURATION%'
+  PlayerNowMuted: '&b%PLAYER% &eis now muted! Duration: &a%DURATION%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
+  YouAreMuted: '&eYou are muted! Duration: &a%DURATION%'

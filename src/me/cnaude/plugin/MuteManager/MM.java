@@ -103,6 +103,7 @@ public class MM extends JavaPlugin {
     }
     
     public void mutePlayer(String pName, Long muteTime, CommandSender sender, String reason) {
+        Player player = Bukkit.getServer().getPlayerExact(pName);
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         mList.put(pName, expTime);
@@ -111,12 +112,17 @@ public class MM extends JavaPlugin {
         senderMessage = senderMessage.replaceAll("%PLAYER%", pName);
         senderMessage = senderMessage.replaceAll("%DURATION%", expireTime(pName));        
         if (!reason.isEmpty()) {
-            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
+            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;            
         }
         if (config.shouldNotify()) {
             getServer().broadcastMessage(senderMessage);
         } else {
-            sender.sendMessage(senderMessage);            
+            sender.sendMessage(senderMessage);
+            if (!config.msgYouHaveBeenMuted().isEmpty()) {
+                if (player != null) {
+                    player.sendMessage(config.msgYouHaveBeenMuted().replaceAll("%DURATION%", expireTime(pName)));
+                }
+            }
         }
     }
 
@@ -129,9 +135,11 @@ public class MM extends JavaPlugin {
                 getServer().broadcastMessage(senderMessage);
             } else {
                 logInfo(pName + " has been unmuted!");
-                if (player != null) {                    
-                    player.sendMessage(config.msgYouHaveBeenMuted());
-                } 
+                if (!config.msgYouHaveBeenMuted().isEmpty()) {
+                    if (player != null) {
+                        player.sendMessage(config.msgYouHaveBeenUnMuted());
+                    }
+                }
                 sender.sendMessage(senderMessage);
             }            
         } else {

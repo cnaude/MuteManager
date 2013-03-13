@@ -1,6 +1,6 @@
 name: MuteManager
 main: me.cnaude.plugin.MuteManager.MM
-version: 0.11.0
+version: 0.12.0
 description: Mute those players!
 author: Chris Naude
 loadbefore: 
