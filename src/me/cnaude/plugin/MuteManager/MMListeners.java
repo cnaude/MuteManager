@@ -26,7 +26,7 @@ public class MMListeners implements Listener {
         this.plugin = instance;
     }
 
-    @EventHandler(priority = EventPriority.NORMAL)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (plugin.isMuted(player)) {
