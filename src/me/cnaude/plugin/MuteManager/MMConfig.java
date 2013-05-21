@@ -27,7 +27,7 @@ public final class MMConfig {
     private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
     private static final String REQUIRE_FULL_NAME        = "Global.RequireFullName";
     
-    private static final String MSG_NO_PERM               = "Messages.NoPerm";
+    private static final String MSG_NO_PERM               = "Messages.NoPermission";
     private static final String MSG_ZERO_SECS             = "Messages.ZeroSeconds";
     private static final String MSG_SECONDS               = "Messages.Seconds";
     private static final String MSG_MINUTES               = "Messages.Minutes";
