@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
 import java.util.ArrayList;
 import org.bukkit.command.Command;
@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
  */
 public class MMCommandUnMute implements CommandExecutor {
 
-    private final MM plugin;
+    private final MuteManager plugin;
 
-    public MMCommandUnMute(MM instance) {
+    public MMCommandUnMute(MuteManager instance) {
         this.plugin = instance;
     }
 

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.bukkit.configuration.Configuration;
  */
 public final class MMConfig {
     private final Configuration config;
-    private final MM plugin;
+    private final MuteManager plugin;
     
     private static final String GLOBAL_NOTIFY            = "Global.Notify";
     private static final String DEFAULT_TIME             = "Global.DefaultTime";
@@ -26,6 +26,7 @@ public final class MMConfig {
     private static final String BLOCK_CMDS               = "Global.BlockCommands";
     private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
     private static final String REQUIRE_FULL_NAME        = "Global.RequireFullName";
+    private static final String GLOBAL_DEBUG             = "Global.Debug";
     
     private static final String MSG_NO_PERM               = "Messages.NoPermission";
     private static final String MSG_ZERO_SECS             = "Messages.ZeroSeconds";
@@ -71,13 +72,17 @@ public final class MMConfig {
     private String msgReason;
     private String msgYouAreMuted;
     
-    public MMConfig(MM instance) {
+    private boolean debugEnabled;
+    
+    public MMConfig(MuteManager instance) {
         plugin = instance;  
         config = this.plugin.getConfig();
         loadValues();
     }
     
-    public void loadValues() {               
+    public void loadValues() {   
+        debugEnabled     = config.getBoolean(GLOBAL_DEBUG, false);        
+        
         shouldNotify  = config.getBoolean(GLOBAL_NOTIFY, true);                
         defaultTime   = config.getInt(DEFAULT_TIME, 5);       
         defaultReason = config.getString(DEFAULT_REASON, "None");
@@ -202,5 +207,9 @@ public final class MMConfig {
     
     public String msgYouAreMuted() {
         return ChatColor.translateAlternateColorCodes(('&'), msgYouAreMuted);
+    }
+    
+    public boolean debugEnabled() {
+        return debugEnabled;
     }
 }

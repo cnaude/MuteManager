@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,9 +16,9 @@ import org.bukkit.entity.Player;
  */
 public class MMCommandMuteList implements CommandExecutor {
 
-    private final MM plugin;
+    private final MuteManager plugin;
 
-    public MMCommandMuteList(MM instance) {
+    public MMCommandMuteList(MuteManager instance) {
         this.plugin = instance;
     }
 

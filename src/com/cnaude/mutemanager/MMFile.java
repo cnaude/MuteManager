@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author cnaude
  */
 public class MMFile {
-    private final MM plugin;
+    private final MuteManager plugin;
     private File dataFolder;
 
     private boolean dataFolderExists() {
@@ -27,7 +27,7 @@ public class MMFile {
         return this.dataFolder.exists();
     }
     
-    public MMFile(MM instance) {
+    public MMFile(MuteManager instance) {
         this.plugin = instance;
     }
     

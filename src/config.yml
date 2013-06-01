@@ -17,6 +17,8 @@ Global:
     - /msg
     - /tell
   AllowOfflineMute: false
+  # Nothing to see here
+  Debug: false
 Messages:
   NoPermission: '&cYou do not have permission to use this command!'
   ZeroSeconds: 0 seconds

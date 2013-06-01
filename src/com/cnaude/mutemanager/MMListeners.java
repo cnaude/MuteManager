@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
-import static me.cnaude.plugin.MuteManager.MM.config;
+import static com.cnaude.mutemanager.MuteManager.config;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -20,9 +20,9 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
  */
 public class MMListeners implements Listener {
 
-    private final MM plugin;
+    private final MuteManager plugin;
 
-    public MMListeners(MM instance) {
+    public MMListeners(MuteManager instance) {
         this.plugin = instance;
     }
 

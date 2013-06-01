@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package me.cnaude.plugin.MuteManager;
+package com.cnaude.mutemanager;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -18,7 +18,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  *
  * @author cnaude
  */
-public class MM extends JavaPlugin {
+public class MuteManager extends JavaPlugin {
 
     // Mute list is stored as playername and milliseconds
     public HashMap<String, Long> mList = new HashMap<String, Long>();
@@ -74,6 +74,12 @@ public class MM extends JavaPlugin {
 
     public void logError(String _message) {
         log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, _message));
+    }
+    
+    public void logDebug(String _message) {
+        if (config.debugEnabled()) {
+            log.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, _message));
+        }
     }
 
     public MMConfig getMConfig() {
