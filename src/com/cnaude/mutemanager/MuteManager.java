@@ -153,10 +153,11 @@ public class MuteManager extends JavaPlugin {
         }
     }
 
-    public boolean unMutePlayer(String p) {
+    public boolean unMutePlayer(String p) {  
+        logDebug("Unmuting: " + p);
         String pName = p;
         for (String s : mList.keySet()) {
-            if (s.equalsIgnoreCase(s)) {
+            if (s.equalsIgnoreCase(pName)) {
                 pName = s;
             }
         }

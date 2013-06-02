@@ -23,8 +23,10 @@ public class MMLoop {
                     if (plugin.mList.containsKey(pName)) {
                         long curTime = System.currentTimeMillis();
                         long expTime = plugin.mList.get(pName);
+                        plugin.logDebug(expTime + " <=> " + curTime);
                         if (expTime <= curTime) {
                             unMuteList.add(pName);
+                            plugin.logDebug("Unmuting " + pName);
                         }
                     }
                 }
