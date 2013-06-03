@@ -1,8 +1,8 @@
-name: MuteManager
-main: com.cnaude.mutemanager.MuteManager
-version: 0.12.4
-description: Mute those players!
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
 author: Chris Naude
+main: com.cnaude.mutemanager.MuteManager
 loadbefore: 
   - Essentials
   - TownyChat
