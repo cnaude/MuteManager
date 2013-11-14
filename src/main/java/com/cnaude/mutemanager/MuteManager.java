@@ -29,7 +29,9 @@ public class MuteManager extends JavaPlugin {
     public static final String PLUGIN_NAME = "MuteManager";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Logger.getLogger("Minecraft");
-    private MMFile mFile = new MMFile(this);
+    private final MMFile mFile = new MMFile(this);
+    private final String muteBroadcastPermNode = "mutemanager.mutenotify";
+    private final String unMuteBroadcastPermNode = "mutemanager.unmutenotify";
     MMLoop mmLoop;
 
     @Override
@@ -92,18 +94,19 @@ public class MuteManager extends JavaPlugin {
         String pName = player.getName();
         mList.put(pName, expTime);
         mReason.put(pName, reason);
-        String senderMessage = config.msgPlayerNowMuted();
-        senderMessage = senderMessage.replaceAll("%PLAYER%", pName);
-        senderMessage = senderMessage.replaceAll("%DURATION%", expireTime(pName));        
+        String senderMessage = config.msgPlayerNowMuted()
+                .replace("%AUTHOR%", sender.getName())
+                .replace("%PLAYER%", pName)
+                .replace("%DURATION%", expireTime(pName));         
         if (!reason.isEmpty()) {
             senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
         }
         if (config.shouldNotify()) {
-            getServer().broadcastMessage(senderMessage);
+            getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
             sender.sendMessage(senderMessage);            
             if (!config.msgYouHaveBeenMuted().isEmpty()) {
-                player.sendMessage(config.msgYouHaveBeenMuted().replaceAll("%DURATION%", expireTime(pName)));
+                player.sendMessage(config.msgYouHaveBeenMuted().replace("%DURATION%", expireTime(pName)));
             }
         }
     }
@@ -114,19 +117,20 @@ public class MuteManager extends JavaPlugin {
         long expTime = curTime + (muteTime * 60 * 1000);
         mList.put(pName, expTime);
         mReason.put(pName, reason);        
-        String senderMessage = config.msgPlayerNowMuted();
-        senderMessage = senderMessage.replaceAll("%PLAYER%", pName);
-        senderMessage = senderMessage.replaceAll("%DURATION%", expireTime(pName));        
+        String senderMessage = config.msgPlayerNowMuted()
+                .replace("%AUTHOR%", sender.getName())
+                .replace("%PLAYER%", pName)
+                .replace("%DURATION%", expireTime(pName));       
         if (!reason.isEmpty()) {
             senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;            
         }
         if (config.shouldNotify()) {
-            getServer().broadcastMessage(senderMessage);
+            getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
             sender.sendMessage(senderMessage);
             if (!config.msgYouHaveBeenMuted().isEmpty()) {
                 if (player != null) {
-                    player.sendMessage(config.msgYouHaveBeenMuted().replaceAll("%DURATION%", expireTime(pName)));
+                    player.sendMessage(config.msgYouHaveBeenMuted().replace("%DURATION%", expireTime(pName)));
                 }
             }
         }
@@ -134,11 +138,13 @@ public class MuteManager extends JavaPlugin {
 
     public void unMutePlayer(String pName, CommandSender sender) {
         Player player = Bukkit.getServer().getPlayerExact(pName);
-        String senderMessage = config.msgSenderUnMuted().replaceAll("%PLAYER%", pName);
+        
+        String senderMessage = config.msgSenderUnMuted().replace("%PLAYER%", pName)
+                .replace("%AUTHOR%", sender.getName());
         boolean success = unMutePlayer(pName);
         if (success) {
             if (config.shouldNotify()) {
-                getServer().broadcastMessage(senderMessage);
+                getServer().broadcast(senderMessage, unMuteBroadcastPermNode);
             } else {
                 logInfo(pName + " has been unmuted!");
                 if (!config.msgYouHaveBeenMuted().isEmpty()) {
@@ -149,7 +155,7 @@ public class MuteManager extends JavaPlugin {
                 sender.sendMessage(senderMessage);
             }            
         } else {
-            sender.sendMessage(config.msgUnableToUnMute().replaceAll("%PLAYER%", pName));
+            sender.sendMessage(config.msgUnableToUnMute().replace("%PLAYER%", pName));
         }
     }
 

@@ -28,4 +28,11 @@ permissions:
         default: false
     mutemanager.listen:
         description: If AdminNotify is true users with this node can read muted messages.
-        default: false         
+        default: false   
+    mutemanager.mutenotify:
+        description: Receive broadcast messages when a player is muted.
+        default: op
+    mutemanager.unmutenotify:
+        description: Receive broadcast messages when a player is unmuted.
+        default: op 
+     
