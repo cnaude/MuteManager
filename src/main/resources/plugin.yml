@@ -19,13 +19,13 @@ commands:
 permissions: 
     mutemanager.mute:
         description: Gives player access to /mute.
-        default: false 
+        default: op 
     mutemanager.unmute:
         description: Gives player access to /unmute.
-        default: false 
+        default: op 
     mutemanager.mutelist:
         description: Gives player access to /mutelist.
-        default: false
+        default: op
     mutemanager.listen:
         description: If AdminNotify is true users with this node can read muted messages.
         default: false   
