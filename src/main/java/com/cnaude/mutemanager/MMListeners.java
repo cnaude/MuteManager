@@ -30,9 +30,16 @@ public class MMListeners implements Listener {
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (plugin.isMuted(player)) {
-            event.setCancelled(true); 
+            event.setCancelled(true);
             if (!config.msgYouAreMuted().isEmpty()) {
-                player.sendMessage(config.msgYouAreMuted().replaceAll("%DURATION%", plugin.expireTime(player)));
+                String reason = "";
+                if (plugin.mReason.containsKey(player.getName())) {
+                    reason = plugin.mReason.get(player.getName());
+                }
+                player.sendMessage(config.msgYouAreMuted()
+                        .replace("%DURATION%", plugin.expireTime(player))
+                        .replace("%REASON%", reason)
+                );
             }
             if (plugin.getMConfig().adminListen()) {
                 String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";
@@ -44,20 +51,29 @@ public class MMListeners implements Listener {
             plugin.unMutePlayer(player.getName());
         }
     }
-    
+
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onPlayerCommandPreprocessEvent (PlayerCommandPreprocessEvent  event) {
+    public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        String attemptedCmd = event.getMessage().split(" ")[0];        
+        String attemptedCmd = event.getMessage().split(" ")[0];
         if (plugin.isMuted(player) && plugin.isBlockedCmd(attemptedCmd)) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.YELLOW + "You are " + ChatColor.RED + "muted" + ChatColor.YELLOW + "! Duration: " + ChatColor.WHITE + plugin.expireTime(player));
+            if (!config.msgYouAreMuted().isEmpty()) {
+                String reason = "";
+                if (plugin.mReason.containsKey(player.getName())) {
+                    reason = plugin.mReason.get(player.getName());
+                }
+                player.sendMessage(config.msgYouAreMuted()
+                        .replace("%DURATION%", plugin.expireTime(player))
+                        .replace("%REASON%", reason)
+                );
+            }
             if (plugin.getMConfig().adminListen()) {
                 String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";
                 bCastMessage = bCastMessage + "<" + player.getName() + "> ";
                 bCastMessage = bCastMessage + ChatColor.GRAY + event.getMessage();
                 Bukkit.getServer().broadcast(bCastMessage, plugin.getMConfig().broadcastNode());
             }
-        } 
+        }
     }
 }

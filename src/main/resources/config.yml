@@ -29,7 +29,7 @@ Messages:
   Years: years
   Forever: forever
   UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
-  YouHaveBeenMuted: '&eYou have been muted! Duration: &a%DURATION%'
+  YouHaveBeenMuted: '&eYou have been muted! Duration: &a%DURATION% &eReason: &a%REASON%'
   YouHaveBeenUnMuted: '&eYou have been unmuted!'
   NoPlayer: 'There is no player by that name online!'
   Reason: 'Reason'

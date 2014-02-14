@@ -106,7 +106,10 @@ public class MuteManager extends JavaPlugin {
         } else {
             sender.sendMessage(senderMessage);            
             if (!config.msgYouHaveBeenMuted().isEmpty()) {
-                player.sendMessage(config.msgYouHaveBeenMuted().replace("%DURATION%", expireTime(pName)));
+                player.sendMessage(config.msgYouHaveBeenMuted()
+                        .replace("%DURATION%", expireTime(pName))
+                        .replace("%REASON%", reason)
+                );
             }
         }
     }
@@ -130,7 +133,10 @@ public class MuteManager extends JavaPlugin {
             sender.sendMessage(senderMessage);
             if (!config.msgYouHaveBeenMuted().isEmpty()) {
                 if (player != null) {
-                    player.sendMessage(config.msgYouHaveBeenMuted().replace("%DURATION%", expireTime(pName)));
+                    player.sendMessage(config.msgYouHaveBeenMuted()
+                            .replace("%DURATION%", expireTime(pName))
+                            .replace("%REASON%", reason)
+                    );
                 }
             }
         }
