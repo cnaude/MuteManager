@@ -4,6 +4,8 @@
  */
 package com.cnaude.mutemanager;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,9 +19,11 @@ import org.bukkit.entity.Player;
 public class MMCommandMute implements CommandExecutor {
 
     private final MuteManager plugin;
+    Pattern p;
 
     public MMCommandMute(MuteManager instance) {
         this.plugin = instance;
+        p = Pattern.compile("^(\\d+)([mhd])$");
     }
 
     @Override
@@ -38,7 +42,7 @@ public class MMCommandMute implements CommandExecutor {
         }
 
         long muteTime;
-        
+
         String reason = "";
         if (args.length > 2) {
             for (int x = 2; x < args.length; x++) {
@@ -54,23 +58,40 @@ public class MMCommandMute implements CommandExecutor {
                 plugin.logDebug("M2");
                 muteTime = 52594900; // 100 Years of minutes.
             } else {
-                plugin.logDebug("M3");
-                try {
-                    plugin.logDebug("M4");
-                    muteTime = Long.parseLong(args[1]);
-                } catch (NumberFormatException nf) {
-                    plugin.logDebug("M5");
-                    return false;
+                Matcher m = p.matcher(args[1].toLowerCase());
+                if (m.find()) {
+                    try {
+                        plugin.logDebug("M4");
+                        muteTime = Long.parseLong(m.group(1));
+                    } catch (NumberFormatException nf) {
+                        plugin.logDebug("M5");
+                        return false;
+                    }
+                    if (m.group(2).equals("d")) {
+                        plugin.logDebug("Muting for " + m.group(1) + " day(s).");                       
+                        muteTime = muteTime * 1440;
+                    } else if (m.group(2).equals("h")) {
+                        plugin.logDebug("Muting for " + m.group(1) + " hour(s).");                       
+                        muteTime = muteTime * 60;
+                    }
+                } else {
+                    try {
+                        plugin.logDebug("M6");
+                        muteTime = Long.parseLong(args[1]);
+                    } catch (NumberFormatException nf) {
+                        plugin.logDebug("M7: " + nf.getMessage());
+                        return false;
+                    }
                 }
             }
         } else if (args.length == 1) {
-            plugin.logDebug("M6");
+            plugin.logDebug("M8");
             muteTime = plugin.getMConfig().defaultTime();
         } else {
-            plugin.logDebug("M7");
+            plugin.logDebug("M9");
             return false;
         }
-        
+
         String pName = args[0];
         if (pName.equals("*")) {
             plugin.logDebug("C1");
@@ -80,7 +101,7 @@ public class MMCommandMute implements CommandExecutor {
             }
         } else {
             plugin.logDebug("C3");
-            Player player = Bukkit.getPlayerExact(pName); 
+            Player player = Bukkit.getPlayerExact(pName);
             plugin.logDebug("C4");
             if (player == null) {
                 plugin.logDebug("C5");
