@@ -21,13 +21,20 @@
         <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases> 
+                <!-- set to true if you wish to fetch releases from this repo too. -->
+                <enabled>false</enabled>
+            </releases> 
         </repository>
 
-        <!-- For anything else without its own repo
+        <!-- For anything else without its own repo -->
         <repository>
             <id>cnaude-repo</id>
             <url>http://cnaude.freeshell.org/maven/repo/releases/</url>
-        </repository> -->
+        </repository>
         <!-- For JUnitBenchmarks -->
         <repository>
             <id>sonatype-nexus-public</id>
