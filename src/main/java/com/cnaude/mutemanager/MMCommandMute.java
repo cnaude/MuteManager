@@ -67,12 +67,15 @@ public class MMCommandMute implements CommandExecutor {
                         plugin.logDebug("M5");
                         return false;
                     }
-                    if (m.group(2).equals("d")) {
-                        plugin.logDebug("Muting for " + m.group(1) + " day(s).");                       
-                        muteTime = muteTime * 1440;
-                    } else if (m.group(2).equals("h")) {
-                        plugin.logDebug("Muting for " + m.group(1) + " hour(s).");                       
-                        muteTime = muteTime * 60;
+                    switch (m.group(2)) {
+                        case "d":
+                            plugin.logDebug("Muting for " + m.group(1) + " day(s).");
+                            muteTime = muteTime * 1440;
+                            break;
+                        case "h":
+                            plugin.logDebug("Muting for " + m.group(1) + " hour(s).");
+                            muteTime = muteTime * 60;
+                            break;
                     }
                 } else {
                     try {
@@ -93,36 +96,18 @@ public class MMCommandMute implements CommandExecutor {
         }
 
         String pName = args[0];
-        if (pName.equals("*")) {
-            plugin.logDebug("C1");
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                plugin.logDebug("C2");
+        if (pName.equals("*")) {            
+            for (Player player : Bukkit.getOnlinePlayers()) {                
                 plugin.mutePlayer(player, muteTime, sender, reason);
             }
-        } else {
-            plugin.logDebug("C3");
-            Player player = Bukkit.getPlayerExact(pName);
-            plugin.logDebug("C4");
-            if (player == null) {
-                plugin.logDebug("C5");
-                if (plugin.getMConfig().allowOfflineMute()) {
-                    plugin.logDebug("C6");
-                    plugin.mutePlayer(pName, muteTime, sender, reason);
-                } else {
-                    plugin.logDebug("C7");
-                    if (!plugin.getMConfig().msgNoPlayer().isEmpty()) {
-                        plugin.logDebug("C8");
-                        sender.sendMessage(plugin.getMConfig().msgNoPlayer());
-                    }
+        } else {            
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
+                if (player.getName().equals(pName)) {                
+                        plugin.mutePlayer(player, muteTime, sender, reason);  
+                        break;
                 }
-            } else {
-                plugin.logDebug("C9");
-                plugin.mutePlayer(player, muteTime, sender, reason);
-                plugin.logDebug("C10");
             }
-        }
-        plugin.logDebug("C11");
+        }        
         return true;
-
     }
 }

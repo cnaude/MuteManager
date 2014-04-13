@@ -18,20 +18,15 @@ public class MMLoop {
                 if (plugin.mList.isEmpty()) {
                     return;
                 }
-                ArrayList unMuteList = new ArrayList();
-                for (String pName : plugin.mList.keySet()) {
-                    if (plugin.mList.containsKey(pName)) {
-                        long curTime = System.currentTimeMillis();
-                        long expTime = plugin.mList.get(pName);
-                        plugin.logDebug(expTime + " <=> " + curTime);
-                        if (expTime <= curTime) {
-                            unMuteList.add(pName);
-                            plugin.logDebug("Unmuting " + pName);
-                        }
-                    }
+                ArrayList<MutedPlayer> unMuteList = new ArrayList();
+                for (MutedPlayer mutedPlayer : plugin.mList) {
+                    if (!mutedPlayer.isMuted()) {
+                        unMuteList.add(mutedPlayer);
+                        plugin.logDebug("Unmuting " + mutedPlayer.getPlayerName());
+                    }                     
                 }
-                for (Object pName : unMuteList) {
-                    plugin.unMutePlayer((String) pName);
+                for (MutedPlayer mutedPlayer : unMuteList) {
+                    plugin.unMutePlayer(mutedPlayer);
                 }
                 unMuteList.clear();
             }

@@ -24,7 +24,7 @@ public final class MMConfig {
     private static final String BROADCAST_NODE           = "Global.BroadcastNode";
     private static final String COMMANDS                 = "Global.Commands";
     private static final String BLOCK_CMDS               = "Global.BlockCommands";
-    private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
+    //private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
     private static final String REQUIRE_FULL_NAME        = "Global.RequireFullName";
     private static final String GLOBAL_DEBUG             = "Global.Debug";
     
@@ -44,6 +44,7 @@ public final class MMConfig {
     private static final String MSG_NO_PLAYER             = "Messages.NoPlayer";
     private static final String MSG_REASON                = "Messages.Reason";
     private static final String MSG_YOU_ARE_MUTED         = "Messages.YouAreMuted";
+    private static final String MSG_ALREADY               = "Messages.AlreadyMuted";
     
     
     private boolean shouldNotify;
@@ -52,7 +53,7 @@ public final class MMConfig {
     private boolean adminListen;
     private String broadcastNode;   
     private List<String> blockedCommands = Arrays.asList();    
-    private boolean allowOfflineMute;
+    //private boolean allowOfflineMute;
     private boolean reqFullName;
     
     private String msgNoPerm;
@@ -71,6 +72,7 @@ public final class MMConfig {
     private String msgPlayerNowMuted;
     private String msgReason;
     private String msgYouAreMuted;
+    private String msgAlreadyMuted;
     
     private boolean debugEnabled;
     
@@ -92,7 +94,7 @@ public final class MMConfig {
         if (config.getBoolean(BLOCK_CMDS, false)) {
             blockedCommands = config.getStringList(COMMANDS);
         } 
-        allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false); 
+        //allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false); 
         
         msgNoPerm = config.getString(MSG_NO_PERM);
         msgZeroSeconds = config.getString(MSG_ZERO_SECS);
@@ -110,6 +112,7 @@ public final class MMConfig {
         msgNoPlayer = config.getString(MSG_NO_PLAYER);
         msgReason = config.getString(MSG_REASON);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
+        msgAlreadyMuted = config.getString(MSG_ALREADY);
                
     }
     
@@ -137,9 +140,9 @@ public final class MMConfig {
         return blockedCommands;
     }
 
-    public boolean allowOfflineMute() {
-        return allowOfflineMute;
-    }
+    //public boolean allowOfflineMute() {
+    //    return allowOfflineMute;
+    //}
     
     public boolean reqFullName() {
         return reqFullName;
@@ -207,6 +210,10 @@ public final class MMConfig {
     
     public String msgYouAreMuted() {
         return ChatColor.translateAlternateColorCodes(('&'), msgYouAreMuted);
+    }
+    
+    public String msgAlreadyMuted() {
+        return ChatColor.translateAlternateColorCodes(('&'), msgAlreadyMuted);
     }
     
     public boolean debugEnabled() {

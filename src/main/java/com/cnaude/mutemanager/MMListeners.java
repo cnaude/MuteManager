@@ -30,15 +30,15 @@ public class MMListeners implements Listener {
     public void onAsyncPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (plugin.isMuted(player)) {
+            MutedPlayer mutedPlayer = plugin.getMutedPlayer(player);
+            if (mutedPlayer == null) {
+                return;
+            }
             event.setCancelled(true);
-            if (!config.msgYouAreMuted().isEmpty()) {
-                String reason = "";
-                if (plugin.mReason.containsKey(player.getName())) {
-                    reason = plugin.mReason.get(player.getName());
-                }
+            if (!config.msgYouAreMuted().isEmpty()) {                   
                 player.sendMessage(config.msgYouAreMuted()
-                        .replace("%DURATION%", plugin.expireTime(player))
-                        .replace("%REASON%", reason)
+                        .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
+                        .replace("%REASON%", mutedPlayer.getReason())
                 );
             }
             if (plugin.getMConfig().adminListen()) {
@@ -57,15 +57,15 @@ public class MMListeners implements Listener {
         Player player = event.getPlayer();
         String attemptedCmd = event.getMessage().split(" ")[0];
         if (plugin.isMuted(player) && plugin.isBlockedCmd(attemptedCmd)) {
+            MutedPlayer mutedPlayer = plugin.getMutedPlayer(player);
+            if (mutedPlayer == null) {
+                return;
+            }
             event.setCancelled(true);
-            if (!config.msgYouAreMuted().isEmpty()) {
-                String reason = "";
-                if (plugin.mReason.containsKey(player.getName())) {
-                    reason = plugin.mReason.get(player.getName());
-                }
+            if (!config.msgYouAreMuted().isEmpty()) {                
                 player.sendMessage(config.msgYouAreMuted()
-                        .replace("%DURATION%", plugin.expireTime(player))
-                        .replace("%REASON%", reason)
+                        .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
+                        .replace("%REASON%", mutedPlayer.getReason())
                 );
             }
             if (plugin.getMConfig().adminListen()) {
