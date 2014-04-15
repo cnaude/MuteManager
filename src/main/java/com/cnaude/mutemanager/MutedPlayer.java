@@ -8,7 +8,7 @@ package com.cnaude.mutemanager;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.UUID;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 public class MutedPlayer implements Serializable {
 
@@ -17,7 +17,7 @@ public class MutedPlayer implements Serializable {
     private Long expTime;
     private String reason;
 
-    public MutedPlayer(Player player, Long expTime, String reason) {
+    public MutedPlayer(OfflinePlayer player, Long expTime, String reason) {
         uuid = player.getUniqueId();
         playerName = player.getName();
         this.expTime = expTime;

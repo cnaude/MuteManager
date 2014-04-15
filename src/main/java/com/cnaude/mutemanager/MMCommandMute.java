@@ -4,9 +4,13 @@
  */
 package com.cnaude.mutemanager;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,7 +31,7 @@ public class MMCommandMute implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+    public boolean onCommand(final CommandSender sender, Command cmd, String commandLabel, String[] args) {
         plugin.logDebug("Command: /mute");
         if (sender instanceof Player) {
             plugin.logDebug("Sender: Player: " + sender.getName());
@@ -95,19 +99,44 @@ public class MMCommandMute implements CommandExecutor {
             return false;
         }
 
-        String pName = args[0];
-        if (pName.equals("*")) {            
-            for (Player player : Bukkit.getOnlinePlayers()) {                
+        final String pName = args[0];
+        if (pName.equals("*")) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
                 plugin.mutePlayer(player, muteTime, sender, reason);
             }
-        } else {            
+        } else {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
-                if (player.getName().equals(pName)) {                
-                        plugin.mutePlayer(player, muteTime, sender, reason);  
-                        break;
+                if (player.getName().equals(pName)) {
+                    plugin.mutePlayer(player, muteTime, sender, reason);
+                    return true;
                 }
             }
-        }        
+            if (plugin.getMConfig().allowOfflineMute()) {
+                final long finalMuteTime = muteTime;
+                final String finalReason = reason;
+                plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                    @Override
+                    public void run() {
+
+                        try {
+                            UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(pName));
+                            Map<String, UUID> response = fetcher.call();
+                            for (UUID uuid : response.values()) {
+                                
+                                OfflinePlayer player = plugin.getServer().getOfflinePlayer(uuid);
+                                plugin.logDebug("[Offline UUID: " + uuid + "]"
+                                        + " [Offline player: " + player.getName() + "]");
+                                plugin.mutePlayer(player, finalMuteTime, sender, finalReason);
+                            }
+                        } catch (Exception e) {
+                            plugin.logError("Exception while running UUIDFetcher: " + pName);
+                            plugin.logError(e.getMessage());
+                        }
+                    }
+                });
+            }
+        }
+
         return true;
     }
 }

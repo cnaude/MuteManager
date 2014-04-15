@@ -24,7 +24,7 @@ public final class MMConfig {
     private static final String BROADCAST_NODE           = "Global.BroadcastNode";
     private static final String COMMANDS                 = "Global.Commands";
     private static final String BLOCK_CMDS               = "Global.BlockCommands";
-    //private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
+    private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
     private static final String REQUIRE_FULL_NAME        = "Global.RequireFullName";
     private static final String GLOBAL_DEBUG             = "Global.Debug";
     
@@ -53,7 +53,7 @@ public final class MMConfig {
     private boolean adminListen;
     private String broadcastNode;   
     private List<String> blockedCommands = Arrays.asList();    
-    //private boolean allowOfflineMute;
+    private boolean allowOfflineMute;
     private boolean reqFullName;
     
     private String msgNoPerm;
@@ -94,7 +94,7 @@ public final class MMConfig {
         if (config.getBoolean(BLOCK_CMDS, false)) {
             blockedCommands = config.getStringList(COMMANDS);
         } 
-        //allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false); 
+        allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false); 
         
         msgNoPerm = config.getString(MSG_NO_PERM);
         msgZeroSeconds = config.getString(MSG_ZERO_SECS);
@@ -140,9 +140,9 @@ public final class MMConfig {
         return blockedCommands;
     }
 
-    //public boolean allowOfflineMute() {
-    //    return allowOfflineMute;
-    //}
+    public boolean allowOfflineMute() {
+        return allowOfflineMute;
+    }
     
     public boolean reqFullName() {
         return reqFullName;

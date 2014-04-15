@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -111,6 +112,27 @@ public class MuteManager extends JavaPlugin {
             }
         }
     }
+    
+    public void mutePlayer(OfflinePlayer player, Long muteTime, CommandSender sender, String reason) {
+        if (isMuted(player)) {
+            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));                
+            return;
+        }
+        long curTime = System.currentTimeMillis();
+        long expTime = curTime + (muteTime * 60 * 1000);
+        MutedPlayer mutedPlayer = new MutedPlayer(player, expTime, reason);
+        mList.add(mutedPlayer);
+        String senderMessage = config.msgPlayerNowMuted()
+                .replace("%AUTHOR%", sender.getName())
+                .replace("%PLAYER%", mutedPlayer.getPlayerName())
+                .replace("%DURATION%", mutedPlayer.getExpiredTime(config));
+        if (!reason.isEmpty()) {
+            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
+        }
+        if (config.shouldNotify()) {
+            getServer().broadcast(senderMessage, muteBroadcastPermNode);
+        } 
+    }
 
     public void unMutePlayer(String pName, CommandSender sender) {
         String senderMessage = config.msgSenderUnMuted().replace("%PLAYER%", pName)
@@ -163,6 +185,15 @@ public class MuteManager extends JavaPlugin {
     }
 
     public boolean isMuted(Player player) {
+        for (MutedPlayer mutedPlayer : mList) {
+            if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
+                return mutedPlayer.isMuted();
+            }
+        }
+        return false;
+    }
+    
+    public boolean isMuted(OfflinePlayer player) {
         for (MutedPlayer mutedPlayer : mList) {
             if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
                 return mutedPlayer.isMuted();
