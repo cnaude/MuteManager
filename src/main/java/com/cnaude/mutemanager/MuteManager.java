@@ -5,6 +5,7 @@
 package com.cnaude.mutemanager;
 
 import java.util.ArrayList;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bukkit.ChatColor;
@@ -113,14 +114,14 @@ public class MuteManager extends JavaPlugin {
         }
     }
     
-    public void mutePlayer(OfflinePlayer player, Long muteTime, CommandSender sender, String reason) {
-        if (isMuted(player)) {
-            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));                
+    public void mutePlayer(String player, UUID uuid, Long muteTime, CommandSender sender, String reason) {
+        if (isMuted(uuid)) {
+            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player));                
             return;
         }
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
-        MutedPlayer mutedPlayer = new MutedPlayer(player, expTime, reason);
+        MutedPlayer mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
         mList.add(mutedPlayer);
         String senderMessage = config.msgPlayerNowMuted()
                 .replace("%AUTHOR%", sender.getName())
@@ -196,6 +197,15 @@ public class MuteManager extends JavaPlugin {
     public boolean isMuted(OfflinePlayer player) {
         for (MutedPlayer mutedPlayer : mList) {
             if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
+                return mutedPlayer.isMuted();
+            }
+        }
+        return false;
+    }
+    
+    public boolean isMuted(UUID uuid) {
+        for (MutedPlayer mutedPlayer : mList) {
+            if (mutedPlayer.getUUID().equals(uuid)) {
                 return mutedPlayer.isMuted();
             }
         }

@@ -117,16 +117,11 @@ public class MMCommandMute implements CommandExecutor {
                 plugin.getServer().getScheduler().runTaskAsynchronously(plugin, new Runnable() {
                     @Override
                     public void run() {
-
                         try {
                             UUIDFetcher fetcher = new UUIDFetcher(Arrays.asList(pName));
                             Map<String, UUID> response = fetcher.call();
                             for (UUID uuid : response.values()) {
-                                
-                                OfflinePlayer player = plugin.getServer().getOfflinePlayer(uuid);
-                                plugin.logDebug("[Offline UUID: " + uuid + "]"
-                                        + " [Offline player: " + player.getName() + "]");
-                                plugin.mutePlayer(player, finalMuteTime, sender, finalReason);
+                                plugin.mutePlayer(pName, uuid, finalMuteTime, sender, finalReason);
                             }
                         } catch (Exception e) {
                             plugin.logError("Exception while running UUIDFetcher: " + pName);
