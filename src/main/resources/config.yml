@@ -36,4 +36,4 @@ Messages:
   PlayerNowMuted: '&b%PLAYER% &eis now muted! Duration: &a%DURATION%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
   YouAreMuted: '&eYou are muted! Duration: &a%DURATION%'
-  AlreadyMuted: '&b%PLAYER% &eis alrteady muted!'
+  AlreadyMuted: '&b%PLAYER% &eis already muted!'

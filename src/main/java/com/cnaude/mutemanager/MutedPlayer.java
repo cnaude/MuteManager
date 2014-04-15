@@ -19,7 +19,7 @@ public class MutedPlayer implements Serializable {
 
     public MutedPlayer(Player player, Long expTime, String reason) {
         uuid = player.getUniqueId();
-        playerName = player.getDisplayName();
+        playerName = player.getName();
         this.expTime = expTime;
         this.reason = reason;
     }

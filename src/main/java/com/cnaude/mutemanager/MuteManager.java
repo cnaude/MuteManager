@@ -178,7 +178,7 @@ public class MuteManager extends JavaPlugin {
     public MutedPlayer getMutedPlayer(Player player) {
         MutedPlayer mPlayer = null;
         for (MutedPlayer mutedPlayer : mList) {
-            if (mutedPlayer.getPlayerName().equals(player.getDisplayName())) {
+            if (mutedPlayer.getPlayerName().equals(player.getName())) {
                 return mutedPlayer;
             }
         }
@@ -187,10 +187,10 @@ public class MuteManager extends JavaPlugin {
 
     public Player lookupPlayer(String pName) {
         for (Player player : getServer().getOnlinePlayers()) {
-            if (player.getDisplayName().equals(pName) && config.reqFullName()) {
+            if (player.getName().equals(pName) && config.reqFullName()) {
                 return player;
             }
-            if (player.getDisplayName().toLowerCase().startsWith(pName)) {
+            if (player.getName().toLowerCase().startsWith(pName)) {
                 return player;
             }
         }
