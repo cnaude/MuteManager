@@ -16,6 +16,9 @@ commands:
     mutelist:
         description: List muted players
         usage: /mutelist
+    mutereload:
+        description: Reload configuration
+        usage: /mutereload
 permissions: 
     mutemanager.mute:
         description: Gives player access to /mute.
@@ -35,4 +38,7 @@ permissions:
     mutemanager.unmutenotify:
         description: Receive broadcast messages when a player is unmuted.
         default: op 
+    mutemanager.reload:
+        description: Gives player access to /mutereload.
+        default: op
      

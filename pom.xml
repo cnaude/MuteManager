@@ -3,18 +3,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cnaude</groupId>
-    <artifactId>MuteManager</artifactId>
-    <version>0.15.0-SNAPSHOT</version>
-    <name>MuteManager</name>
-    <description>CraftBukkit plugin that allows admins to mute players.</description>
-    <url>http://dev.bukkit.org/server-mods/mutemanager/</url>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Bukkit API Version, change if out dated -->
         <bukkit.version>1.7.9-R0.1</bukkit.version>
+        <build.number>SNAPSHOT</build.number>
     </properties>
+
+    <groupId>com.cnaude</groupId>
+    <artifactId>MuteManager</artifactId>
+    <version>0.16-${build.number}</version>
+    <name>MuteManager</name>
+    <description>CraftBukkit plugin that allows admins to mute players.</description>
+    <url>http://dev.bukkit.org/server-mods/mutemanager/</url>
+
+    
 
     <repositories>
         <repository>
@@ -120,11 +123,11 @@
                     <execution>
                         <phase>package</phase>
                         <configuration>
-                            <tasks>                                                                
-                                <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>                                
+                            <tasks>                                                                              
+                                <copy file="../${project.name}/target/${project.name}-${project.version}.jar" tofile="../${project.name}/target/${project.name}.jar"/>
                                 <exec dir="../${project.name}/target" executable="scp">
-                                    <arg line="${arg} ${project.name}.jar cnaude@cn.revisited.us:minetest/plugins/"/>
-                                </exec>  
+                                    <arg line="${project.name}.jar cnaude@h.cnaude.org:minetest/plugins/"/>
+                                </exec>
                             </tasks>
                         </configuration>
                         <goals>

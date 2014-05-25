@@ -35,12 +35,13 @@ public class MuteManager extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        loadConfig();
+        loadConfig(null);
         mFile.loadMuteList();
         mFile.loadMuteReasonList();
         getCommand("mute").setExecutor(new MMCommandMute(this));
         getCommand("unmute").setExecutor(new MMCommandUnMute(this));
         getCommand("mutelist").setExecutor(new MMCommandMuteList(this));
+        getCommand("mutereload").setExecutor(new MMCommandReload(this));
         getServer().getPluginManager().registerEvents(mmListeners, this);
         mmLoop = new MMLoop(this);
     }
@@ -52,21 +53,31 @@ public class MuteManager extends JavaPlugin {
         mList.clear();
     }
 
-    void loadConfig() {
+    void loadConfig(CommandSender sender) {
+        String loaded = "Configuration loaded.";
+        String reloaded = "Configuration reloaded.";
         if (!this.configLoaded) {
             getConfig().options().copyDefaults(true);
             saveConfig();
-            logInfo("Configuration loaded.");
+            if (sender != null) {
+                sender.sendMessage(ChatColor.GOLD + LOG_HEADER + " " + ChatColor.GRAY + loaded);
+            } else {
+                logInfo(loaded);
+            }
             config = new MMConfig(this);
         } else {
             reloadConfig();
             getConfig().options().copyDefaults(false);
             config = new MMConfig(this);
-            logInfo("Configuration reloaded.");
+            if (sender != null) {
+                sender.sendMessage(ChatColor.GOLD + LOG_HEADER + " " + ChatColor.GRAY + reloaded);
+            } else {
+                logInfo(reloaded);
+            }
         }
         configLoaded = true;
     }
-
+    
     public void logInfo(String _message) {
         log.log(Level.INFO, String.format("%s %s", LOG_HEADER, _message));
     }
