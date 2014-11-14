@@ -224,7 +224,12 @@ public class MuteManager extends JavaPlugin {
     }
 
     public boolean isBlockedCmd(String cmd) {
-        return getMConfig().blockedCmds().contains(cmd);
+        for (String s : getMConfig().blockedCmds()) {
+            if (s.equalsIgnoreCase(cmd)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public MutedPlayer getMutedPlayer(Player player) {
