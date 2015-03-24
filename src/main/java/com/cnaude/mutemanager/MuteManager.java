@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.cnaude.mutemanager;
 
 import java.util.ArrayList;
@@ -97,6 +93,10 @@ public class MuteManager extends JavaPlugin {
     }
 
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
+        if (player.hasPermission("mutemanager.muteexempt")) {
+            logDebug("Player " + player.getName() + " is exempt due to mutemanager.muteexempt.");
+            return;
+        }
         if (isMuted(player)) {
             sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));                
             return;

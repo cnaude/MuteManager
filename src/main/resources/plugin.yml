@@ -41,4 +41,7 @@ permissions:
     mutemanager.reload:
         description: Gives player access to /mutereload.
         default: op
+    mutemanager.muteexempt:
+        description: Exempts player from being muted
+        default: false
      

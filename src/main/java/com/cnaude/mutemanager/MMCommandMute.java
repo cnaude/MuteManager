@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -96,7 +95,7 @@ public class MMCommandMute implements CommandExecutor {
 
         final String pName = args[0];
         if (pName.equals("*")) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
+            for (Player player : plugin.getServer().getOnlinePlayers()) {
                 plugin.mutePlayer(player, muteTime, sender, reason);
             }
         } else {
