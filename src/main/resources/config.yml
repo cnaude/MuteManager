@@ -29,7 +29,9 @@ Messages:
   Years: years
   Forever: forever
   UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
+  # %REASONTEXT%
   Reason: ' &eReason: &a%REASON%'
+  # %DURATIONTEXT%
   Duration: ' &eDuration: &a%DURATION%'
   YouHaveBeenMuted: '&eYou have been muted!%DURATIONTEXT%%REASONTEXT%'
   YouHaveBeenUnMuted: '&eYou have been unmuted!'
