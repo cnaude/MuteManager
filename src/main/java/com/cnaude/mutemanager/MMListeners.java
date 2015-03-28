@@ -30,12 +30,9 @@ public class MMListeners implements Listener {
             if (mutedPlayer == null) {
                 return;
             }
-            event.setCancelled(true);
-            if (!config.msgYouAreMuted().isEmpty()) {                   
-                player.sendMessage(config.msgYouAreMuted()
-                        .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
-                        .replace("%REASON%", mutedPlayer.getReason())
-                );
+            event.setCancelled(true);            
+            if (!config.msgYouAreMuted().isEmpty()) {
+                player.sendMessage(plugin.tokenize(mutedPlayer, config.msgYouAreMuted()));
             }
             if (plugin.getMConfig().adminListen()) {
                 String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";
@@ -59,10 +56,7 @@ public class MMListeners implements Listener {
             }
             event.setCancelled(true);
             if (!config.msgYouAreMuted().isEmpty()) {                
-                player.sendMessage(config.msgYouAreMuted()
-                        .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
-                        .replace("%REASON%", mutedPlayer.getReason())
-                );
+                player.sendMessage(plugin.tokenize(mutedPlayer, config.msgYouAreMuted()));
             }
             if (plugin.getMConfig().adminListen()) {
                 String bCastMessage = ChatColor.WHITE + "[" + ChatColor.RED + "Mute" + ChatColor.WHITE + "]";

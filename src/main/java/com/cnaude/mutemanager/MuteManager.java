@@ -98,49 +98,34 @@ public class MuteManager extends JavaPlugin {
             return;
         }
         if (isMuted(player)) {
-            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));
+            sender.sendMessage(tokenize(getMutedPlayer(player), config.msgAlreadyMuted()));
             return;
         }
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         MutedPlayer mutedPlayer = new MutedPlayer(player, expTime, reason);
         mList.add(mutedPlayer);
-        String senderMessage = config.msgPlayerNowMuted()
-                .replace("%AUTHOR%", sender.getName())
-                .replace("%PLAYER%", mutedPlayer.getPlayerName())
-                .replace("%DURATION%", mutedPlayer.getExpiredTime(config));
-        if (!reason.isEmpty()) {
-            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
-        }
+        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());        
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
             sender.sendMessage(senderMessage);
         }
         if (!config.msgYouHaveBeenMuted().isEmpty()) {
-            player.sendMessage(config.msgYouHaveBeenMuted()
-                    .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
-                    .replace("%REASON%", mutedPlayer.getReason())
-            );
+            player.sendMessage(tokenize(mutedPlayer, config.msgYouHaveBeenMuted()));
         }
     }
 
     public void mutePlayer(String player, UUID uuid, Long muteTime, CommandSender sender, String reason) {
         if (isMuted(uuid)) {
-            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player));
+            sender.sendMessage(tokenize(getMutedPlayer(uuid), config.msgAlreadyMuted()));
             return;
         }
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         MutedPlayer mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
         mList.add(mutedPlayer);
-        String senderMessage = config.msgPlayerNowMuted()
-                .replace("%AUTHOR%", sender.getName())
-                .replace("%PLAYER%", mutedPlayer.getPlayerName())
-                .replace("%DURATION%", mutedPlayer.getExpiredTime(config));
-        if (!reason.isEmpty()) {
-            senderMessage = senderMessage + ChatColor.YELLOW + ". " + config.msgReason() + ": " + ChatColor.RED + reason;
-        }
+        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());        
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
@@ -148,8 +133,9 @@ public class MuteManager extends JavaPlugin {
         }
     }
 
-    public void unMutePlayer(String pName, CommandSender sender) {
-        String senderMessage = config.msgSenderUnMuted().replace("%PLAYER%", pName)
+    public void unMutePlayer(String pName, CommandSender sender) {        
+        String senderMessage = config.msgSenderUnMuted()
+                .replace("%PLAYER%", pName)
                 .replace("%AUTHOR%", sender.getName());
         boolean success = unMutePlayer(pName);
         if (success) {
@@ -243,6 +229,16 @@ public class MuteManager extends JavaPlugin {
         }
         return mPlayer;
     }
+    
+    public MutedPlayer getMutedPlayer(UUID uuid) {
+        MutedPlayer mPlayer = null;
+        for (MutedPlayer mutedPlayer : mList) {
+            if (mutedPlayer.getUUID().equals(uuid)) {
+                return mutedPlayer;
+            }
+        }
+        return mPlayer;
+    }
 
     public Player lookupPlayer(String pName) {
         for (Player player : getServer().getOnlinePlayers()) {
@@ -255,4 +251,15 @@ public class MuteManager extends JavaPlugin {
         }
         return null;
     }
+
+    public String tokenize(MutedPlayer mutedPlayer, String template) {
+        String duration = config.msgDuration().replace("%DURATION%", mutedPlayer.getExpiredTime(config));
+        String reason = config.msgReason().replace("%REASON%", mutedPlayer.getReason());
+        return template
+                .replace("%DURATIONTEXT%", duration)
+                .replace("%REASONTEXT%", reason)
+                .replace("%AUTHOR%", mutedPlayer.getAuthor())
+                .replace("%PLAYER%", mutedPlayer.getPlayerName());
+    }
+    
 }

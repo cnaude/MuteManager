@@ -29,11 +29,12 @@ Messages:
   Years: years
   Forever: forever
   UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
-  YouHaveBeenMuted: '&eYou have been muted! Duration: &a%DURATION% &eReason: &a%REASON%'
+  Reason: ' &eReason: &a%REASON%'
+  Duration: ' &eDuration: &a%DURATION%'
+  YouHaveBeenMuted: '&eYou have been muted!%DURATIONTEXT%%REASONTEXT%'
   YouHaveBeenUnMuted: '&eYou have been unmuted!'
   NoPlayer: 'There is no player by that name online!'
-  Reason: 'Reason'
-  PlayerNowMuted: '&b%PLAYER% &eis now muted! Duration: &a%DURATION%'
+  PlayerNowMuted: '&b%PLAYER% &eis now muted!%DURATIONTEXT%%REASONTEXT%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
-  YouAreMuted: '&eYou are muted! Duration: &a%DURATION%'
-  AlreadyMuted: '&b%PLAYER% &eis already muted!'
+  YouAreMuted: '&eYou are muted!%DURATIONTEXT%%REASONTEXT%'
+  AlreadyMuted: '&b%PLAYER% &eis already muted!%DURATIONTEXT%%REASONTEXT%'

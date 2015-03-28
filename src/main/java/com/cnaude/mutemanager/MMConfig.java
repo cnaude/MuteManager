@@ -39,6 +39,7 @@ public final class MMConfig {
     private static final String MSG_P_NOW_UNMUTED         = "Messages.PlayerNowUnMuted";
     private static final String MSG_NO_PLAYER             = "Messages.NoPlayer";
     private static final String MSG_REASON                = "Messages.Reason";
+    private static final String MSG_DURATION                = "Messages.Duration";
     private static final String MSG_YOU_ARE_MUTED         = "Messages.YouAreMuted";
     private static final String MSG_ALREADY               = "Messages.AlreadyMuted";
     
@@ -67,6 +68,7 @@ public final class MMConfig {
     private String msgNoPlayer;
     private String msgPlayerNowMuted;
     private String msgReason;
+    private String msgDuration;
     private String msgYouAreMuted;
     private String msgAlreadyMuted;
     
@@ -107,6 +109,7 @@ public final class MMConfig {
         msgPlayerUnMuted = config.getString(MSG_P_NOW_UNMUTED);
         msgNoPlayer = config.getString(MSG_NO_PLAYER);
         msgReason = config.getString(MSG_REASON);
+        msgDuration = config.getString(MSG_DURATION);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
         msgAlreadyMuted = config.getString(MSG_ALREADY);
                
@@ -202,6 +205,10 @@ public final class MMConfig {
     
     public String msgReason() {
         return ChatColor.translateAlternateColorCodes(('&'), msgReason);
+    }
+    
+    public String msgDuration() {
+        return ChatColor.translateAlternateColorCodes(('&'), msgDuration);
     }
     
     public String msgYouAreMuted() {

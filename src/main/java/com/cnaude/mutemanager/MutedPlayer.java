@@ -4,26 +4,46 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.UUID;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.command.CommandSender;
 
 public class MutedPlayer implements Serializable {
 
     private final UUID uuid;
     private final String playerName;
     private Long expTime;
+    private final String author;
     private String reason;
-
+    
     public MutedPlayer(OfflinePlayer player, Long expTime, String reason) {
         uuid = player.getUniqueId();
         playerName = player.getName();
         this.expTime = expTime;
+        this.author = "";
         this.reason = reason;
     }
 
+    public MutedPlayer(OfflinePlayer player, Long expTime, String reason, CommandSender sender) {
+        uuid = player.getUniqueId();
+        playerName = player.getName();
+        this.expTime = expTime;
+        this.author = sender.getName();
+        this.reason = reason;
+    }
+    
     public MutedPlayer(String playerName, UUID uuid, Long expTime, String reason) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.expTime = expTime;
-        this.reason = reason;
+        this.author = "";
+        this.reason = reason;        
+    }
+
+    public MutedPlayer(String playerName, UUID uuid, Long expTime, String reason, CommandSender sender) {
+        this.uuid = uuid;
+        this.playerName = playerName;
+        this.expTime = expTime;
+        this.author = sender.getName();
+        this.reason = reason;        
     }
 
     public String getReason() {
@@ -68,6 +88,10 @@ public class MutedPlayer implements Serializable {
     
     public String getPlayerName() {
         return playerName;
+    }
+    
+    public String getAuthor() {
+        return author;
     }
     
     public UUID getUUID() {
