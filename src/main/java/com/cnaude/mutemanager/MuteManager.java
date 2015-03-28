@@ -73,7 +73,7 @@ public class MuteManager extends JavaPlugin {
         }
         configLoaded = true;
     }
-    
+
     public void logInfo(String _message) {
         log.log(Level.INFO, String.format("%s %s", LOG_HEADER, _message));
     }
@@ -98,7 +98,7 @@ public class MuteManager extends JavaPlugin {
             return;
         }
         if (isMuted(player)) {
-            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));                
+            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player.getName()));
             return;
         }
         long curTime = System.currentTimeMillis();
@@ -116,18 +116,18 @@ public class MuteManager extends JavaPlugin {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
             sender.sendMessage(senderMessage);
-            if (!config.msgYouHaveBeenMuted().isEmpty()) {
-                player.sendMessage(config.msgYouHaveBeenMuted()
-                        .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
-                        .replace("%REASON%", mutedPlayer.getReason())
-                );
-            }
+        }
+        if (!config.msgYouHaveBeenMuted().isEmpty()) {
+            player.sendMessage(config.msgYouHaveBeenMuted()
+                    .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
+                    .replace("%REASON%", mutedPlayer.getReason())
+            );
         }
     }
-    
+
     public void mutePlayer(String player, UUID uuid, Long muteTime, CommandSender sender, String reason) {
         if (isMuted(uuid)) {
-            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player));                
+            sender.sendMessage(config.msgAlreadyMuted().replace("%PLAYER%", player));
             return;
         }
         long curTime = System.currentTimeMillis();
@@ -143,7 +143,9 @@ public class MuteManager extends JavaPlugin {
         }
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
-        } 
+        } else {
+            sender.sendMessage(senderMessage);
+        }
     }
 
     public void unMutePlayer(String pName, CommandSender sender) {
@@ -154,16 +156,16 @@ public class MuteManager extends JavaPlugin {
             if (config.shouldNotify()) {
                 getServer().broadcast(senderMessage, unMuteBroadcastPermNode);
             } else {
-                logInfo(pName + " has been unmuted!");
-                if (!config.msgYouHaveBeenMuted().isEmpty()) {
-                    for (Player player : getServer().getOnlinePlayers()) {
-                        if (player.getName().equals(pName)) {
-                            player.sendMessage(config.msgYouHaveBeenUnMuted());
-                            break;
-                        }
+                sender.sendMessage(senderMessage);
+            }
+            logInfo(pName + " has been unmuted!");
+            if (!config.msgYouHaveBeenMuted().isEmpty()) {
+                for (Player player : getServer().getOnlinePlayers()) {
+                    if (player.getName().equals(pName)) {
+                        player.sendMessage(config.msgYouHaveBeenUnMuted());
+                        break;
                     }
                 }
-                sender.sendMessage(senderMessage);
             }
         } else {
             sender.sendMessage(config.msgUnableToUnMute().replace("%PLAYER%", pName));
@@ -204,7 +206,7 @@ public class MuteManager extends JavaPlugin {
         }
         return false;
     }
-    
+
     public boolean isMuted(OfflinePlayer player) {
         for (MutedPlayer mutedPlayer : mList) {
             if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
@@ -213,7 +215,7 @@ public class MuteManager extends JavaPlugin {
         }
         return false;
     }
-    
+
     public boolean isMuted(UUID uuid) {
         for (MutedPlayer mutedPlayer : mList) {
             if (mutedPlayer.getUUID().equals(uuid)) {
