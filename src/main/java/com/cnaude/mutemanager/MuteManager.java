@@ -256,10 +256,13 @@ public class MuteManager extends JavaPlugin {
         String duration = config.msgDuration().replace("%DURATION%", mutedPlayer.getExpiredTime(config));
         String reason = config.msgReason().replace("%REASON%", mutedPlayer.getReason());
         return template
+                .replace("%DURATION%", mutedPlayer.getExpiredTime(config))
+                .replace("%REASON%", mutedPlayer.getReason())
                 .replace("%DURATIONTEXT%", duration)
                 .replace("%REASONTEXT%", reason)
                 .replace("%AUTHOR%", mutedPlayer.getAuthor())
-                .replace("%PLAYER%", mutedPlayer.getPlayerName());
+                .replace("%PLAYER%", mutedPlayer.getPlayerName())
+                .trim();
     }
     
 }
