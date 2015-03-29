@@ -17,11 +17,13 @@ import org.bukkit.entity.Player;
 public class MuteCommand implements CommandExecutor {
 
     private final MuteManager plugin;
-    Pattern p;
+    Pattern p1;
+    Pattern p2;
 
     public MuteCommand(MuteManager instance) {
         this.plugin = instance;
-        p = Pattern.compile("^(\\d+)([mhd])$");
+        p1 = Pattern.compile("^(\\d+)([mhd])$");
+        p2 = Pattern.compile("^(\\d+)$");
     }
 
     @Override
@@ -56,32 +58,42 @@ public class MuteCommand implements CommandExecutor {
                 plugin.logDebug("M2");
                 muteTime = 52594900; // 100 Years of minutes.
             } else {
-                Matcher m = p.matcher(args[1].toLowerCase());
-                if (m.find()) {
+                Matcher m1 = p1.matcher(args[1].toLowerCase());
+                Matcher m2 = p2.matcher(args[1]);
+                if (m1.find()) {
                     try {
                         plugin.logDebug("M4");
-                        muteTime = Long.parseLong(m.group(1));
+                        muteTime = Long.parseLong(m1.group(1));
                     } catch (NumberFormatException nf) {
                         plugin.logDebug("M5");
                         return false;
                     }
-                    switch (m.group(2)) {
+                    switch (m1.group(2)) {
                         case "d":
-                            plugin.logDebug("Muting for " + m.group(1) + " day(s).");
+                            plugin.logDebug("Muting for " + m1.group(1) + " day(s).");
                             muteTime = muteTime * 1440;
                             break;
                         case "h":
-                            plugin.logDebug("Muting for " + m.group(1) + " hour(s).");
+                            plugin.logDebug("Muting for " + m1.group(1) + " hour(s).");
                             muteTime = muteTime * 60;
                             break;
                     }
-                } else {
+                } else if (m2.find()) {
                     try {
                         plugin.logDebug("M6");
                         muteTime = Long.parseLong(args[1]);
                     } catch (NumberFormatException nf) {
                         plugin.logDebug("M7: " + nf.getMessage());
                         return false;
+                    }
+                } else {
+                    muteTime = plugin.getMConfig().defaultTime();
+                    reason = "";
+                    for (int x = 1; x < args.length; x++) {
+                        reason = reason + " " + args[x];
+                    }
+                    if (reason.isEmpty()) {
+                        reason = plugin.getMConfig().defaultReason();
                     }
                 }
             }
