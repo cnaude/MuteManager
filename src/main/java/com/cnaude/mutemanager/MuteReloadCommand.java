@@ -9,11 +9,11 @@ import org.bukkit.entity.Player;
  *
  * @author cnaude
  */
-public class MMCommandReload implements CommandExecutor {
+public class MuteReloadCommand implements CommandExecutor {
 
     private final MuteManager plugin;
 
-    public MMCommandReload(MuteManager instance) {
+    public MuteReloadCommand(MuteManager instance) {
         this.plugin = instance;
     }
 

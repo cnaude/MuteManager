@@ -1,7 +1,6 @@
 package com.cnaude.mutemanager;
 
 //https://gist.github.com/evilmidget38/df8dcd7855937e9d1e1f
-
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;

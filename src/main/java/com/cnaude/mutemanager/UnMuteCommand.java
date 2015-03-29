@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
  *
  * @author cnaude
  */
-public class MMCommandUnMute implements CommandExecutor {
+public class UnMuteCommand implements CommandExecutor {
 
     private final MuteManager plugin;
 
-    public MMCommandUnMute(MuteManager instance) {
+    public UnMuteCommand(MuteManager instance) {
         this.plugin = instance;
     }
 
@@ -29,15 +29,15 @@ public class MMCommandUnMute implements CommandExecutor {
             }
         }
 
-        if (args.length == 1) {    
+        if (args.length == 1) {
             String pName = args[0];
             if (pName.equals("*")) {
-                ArrayList<String> unMuteList = new ArrayList<>();            
-                for (MutedPlayer mutedPlayer : plugin.mList) {                                  
-                        unMuteList.add(mutedPlayer.getPlayerName());                       
+                ArrayList<String> unMuteList = new ArrayList<>();
+                for (MutedPlayer mutedPlayer : plugin.muteList) {
+                        unMuteList.add(mutedPlayer.getPlayerName());
                 }
                 for (String pNameInner : unMuteList) {
-                    plugin.unMutePlayer(pNameInner, sender); 
+                    plugin.unMutePlayer(pNameInner, sender);
                 }
                 unMuteList.clear();
             } else {

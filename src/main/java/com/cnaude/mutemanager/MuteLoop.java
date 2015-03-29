@@ -2,12 +2,12 @@ package com.cnaude.mutemanager;
 
 import java.util.ArrayList;
 
-public class MMLoop {
+public class MuteLoop {
 
     private final MuteManager plugin;
-    private int taskID;
+    private final int taskID;
 
-    public MMLoop(MuteManager instance) {
+    public MuteLoop(MuteManager instance) {
         plugin = instance;
         plugin.logInfo("MuteManager main loop running.");
 
@@ -15,15 +15,15 @@ public class MMLoop {
             @Override
             public void run() {
                 plugin.logDebug("Checking mute list.");
-                if (plugin.mList.isEmpty()) {
+                if (plugin.muteList.isEmpty()) {
                     return;
                 }
                 ArrayList<MutedPlayer> unMuteList = new ArrayList();
-                for (MutedPlayer mutedPlayer : plugin.mList) {
+                for (MutedPlayer mutedPlayer : plugin.muteList) {
                     if (!mutedPlayer.isMuted()) {
                         unMuteList.add(mutedPlayer);
                         plugin.logDebug("Unmuting " + mutedPlayer.getPlayerName());
-                    }                     
+                    }
                 }
                 for (MutedPlayer mutedPlayer : unMuteList) {
                     plugin.unMutePlayer(mutedPlayer);

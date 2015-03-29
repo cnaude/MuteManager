@@ -13,7 +13,7 @@ public class MutedPlayer implements Serializable {
     private Long expTime;
     private final String author;
     private String reason;
-    
+
     public MutedPlayer(OfflinePlayer player, Long expTime, String reason) {
         uuid = player.getUniqueId();
         playerName = player.getName();
@@ -29,13 +29,13 @@ public class MutedPlayer implements Serializable {
         this.author = sender.getName();
         this.reason = reason;
     }
-    
+
     public MutedPlayer(String playerName, UUID uuid, Long expTime, String reason) {
         this.uuid = uuid;
         this.playerName = playerName;
         this.expTime = expTime;
         this.author = "";
-        this.reason = reason;        
+        this.reason = reason;
     }
 
     public MutedPlayer(String playerName, UUID uuid, Long expTime, String reason, CommandSender sender) {
@@ -43,7 +43,7 @@ public class MutedPlayer implements Serializable {
         this.playerName = playerName;
         this.expTime = expTime;
         this.author = sender.getName();
-        this.reason = reason;        
+        this.reason = reason;
     }
 
     public String getReason() {
@@ -61,7 +61,7 @@ public class MutedPlayer implements Serializable {
         return expTime > System.currentTimeMillis();
     }
 
-    public String getExpiredTime(MMConfig config) {
+    public String getExpiredTime(MuteConfig config) {
         DecimalFormat formatter = new DecimalFormat("0.00");
         float diffTime = ((expTime - System.currentTimeMillis()) / 1000f) / 60f;
         if (diffTime > 5256000) {
@@ -81,19 +81,19 @@ public class MutedPlayer implements Serializable {
         }
         return (formatter.format(diffTime)) + " " + config.msgMinutes();
     }
-    
+
     public long getExpTime() {
         return expTime;
     }
-    
+
     public String getPlayerName() {
         return playerName;
     }
-    
+
     public String getAuthor() {
         return author;
     }
-    
+
     public UUID getUUID() {
         return uuid;
     }

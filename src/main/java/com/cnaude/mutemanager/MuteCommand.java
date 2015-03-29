@@ -14,12 +14,12 @@ import org.bukkit.entity.Player;
  *
  * @author cnaude
  */
-public class MMCommandMute implements CommandExecutor {
+public class MuteCommand implements CommandExecutor {
 
     private final MuteManager plugin;
     Pattern p;
 
-    public MMCommandMute(MuteManager instance) {
+    public MuteCommand(MuteManager instance) {
         this.plugin = instance;
         p = Pattern.compile("^(\\d+)([mhd])$");
     }

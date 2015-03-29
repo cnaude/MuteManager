@@ -17,36 +17,35 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MuteManager extends JavaPlugin {
 
     // Mute list is stored as playername and milliseconds
-    public ArrayList<MutedPlayer> mList = new ArrayList<>();
-    private final MMListeners mmListeners = new MMListeners(this);
+    public ArrayList<MutedPlayer> muteList = new ArrayList<>();
+    private final MuteListeners mmListeners = new MuteListeners(this);
     public boolean configLoaded = false;
-    public static MMConfig config;
+    public static MuteConfig config;
     public static final String PLUGIN_NAME = "MuteManager";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Logger.getLogger("Minecraft");
-    private final MMFile mFile = new MMFile(this);
+    private final MuteFile muteFile = new MuteFile(this);
     private final String muteBroadcastPermNode = "mutemanager.mutenotify";
     private final String unMuteBroadcastPermNode = "mutemanager.unmutenotify";
-    MMLoop mmLoop;
+    MuteLoop muteLoop;
 
     @Override
     public void onEnable() {
         loadConfig(null);
-        mFile.loadMuteList();
-        mFile.loadMuteReasonList();
-        getCommand("mute").setExecutor(new MMCommandMute(this));
-        getCommand("unmute").setExecutor(new MMCommandUnMute(this));
-        getCommand("mutelist").setExecutor(new MMCommandMuteList(this));
-        getCommand("mutereload").setExecutor(new MMCommandReload(this));
+        muteFile.loadMuteList();
+        getCommand("mute").setExecutor(new MuteCommand(this));
+        getCommand("unmute").setExecutor(new UnMuteCommand(this));
+        getCommand("mutelist").setExecutor(new MuteListCommand(this));
+        getCommand("mutereload").setExecutor(new MuteReloadCommand(this));
         getServer().getPluginManager().registerEvents(mmListeners, this);
-        mmLoop = new MMLoop(this);
+        muteLoop = new MuteLoop(this);
     }
 
     @Override
     public void onDisable() {
-        mmLoop.end();
-        mFile.saveMuteList();
-        mList.clear();
+        muteLoop.end();
+        muteFile.saveMuteList();
+        muteList.clear();
     }
 
     void loadConfig(CommandSender sender) {
@@ -60,11 +59,11 @@ public class MuteManager extends JavaPlugin {
             } else {
                 logInfo(loaded);
             }
-            config = new MMConfig(this);
+            config = new MuteConfig(this);
         } else {
             reloadConfig();
             getConfig().options().copyDefaults(false);
-            config = new MMConfig(this);
+            config = new MuteConfig(this);
             if (sender != null) {
                 sender.sendMessage(ChatColor.GOLD + LOG_HEADER + " " + ChatColor.GRAY + reloaded);
             } else {
@@ -88,7 +87,7 @@ public class MuteManager extends JavaPlugin {
         }
     }
 
-    public MMConfig getMConfig() {
+    public MuteConfig getMConfig() {
         return config;
     }
 
@@ -104,8 +103,8 @@ public class MuteManager extends JavaPlugin {
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         MutedPlayer mutedPlayer = new MutedPlayer(player, expTime, reason);
-        mList.add(mutedPlayer);
-        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());        
+        muteList.add(mutedPlayer);
+        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
@@ -124,8 +123,8 @@ public class MuteManager extends JavaPlugin {
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
         MutedPlayer mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
-        mList.add(mutedPlayer);
-        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());        
+        muteList.add(mutedPlayer);
+        String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
@@ -133,7 +132,7 @@ public class MuteManager extends JavaPlugin {
         }
     }
 
-    public void unMutePlayer(String pName, CommandSender sender) {        
+    public void unMutePlayer(String pName, CommandSender sender) {
         String senderMessage = config.msgSenderUnMuted()
                 .replace("%PLAYER%", pName)
                 .replace("%AUTHOR%", sender.getName());
@@ -162,14 +161,14 @@ public class MuteManager extends JavaPlugin {
         logDebug("Unmuting: " + p);
         String pName = p;
         int idx = -1;
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getPlayerName().equalsIgnoreCase(pName)) {
-                idx = mList.indexOf(mutedPlayer);
+                idx = muteList.indexOf(mutedPlayer);
                 break;
             }
         }
         if (idx >= 0) {
-            mList.remove(idx);
+            muteList.remove(idx);
             return true;
         }
         return false;
@@ -177,15 +176,15 @@ public class MuteManager extends JavaPlugin {
 
     public boolean unMutePlayer(MutedPlayer mutedPlayer) {
         logDebug("Unmuting: " + mutedPlayer.getPlayerName());
-        if (mList.contains(mutedPlayer)) {
-            mList.remove(mutedPlayer);
+        if (muteList.contains(mutedPlayer)) {
+            muteList.remove(mutedPlayer);
             return true;
         }
         return false;
     }
 
     public boolean isMuted(Player player) {
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
                 return mutedPlayer.isMuted();
             }
@@ -194,7 +193,7 @@ public class MuteManager extends JavaPlugin {
     }
 
     public boolean isMuted(OfflinePlayer player) {
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getUUID().equals(player.getUniqueId())) {
                 return mutedPlayer.isMuted();
             }
@@ -203,7 +202,7 @@ public class MuteManager extends JavaPlugin {
     }
 
     public boolean isMuted(UUID uuid) {
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getUUID().equals(uuid)) {
                 return mutedPlayer.isMuted();
             }
@@ -222,17 +221,17 @@ public class MuteManager extends JavaPlugin {
 
     public MutedPlayer getMutedPlayer(Player player) {
         MutedPlayer mPlayer = null;
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getPlayerName().equals(player.getName())) {
                 return mutedPlayer;
             }
         }
         return mPlayer;
     }
-    
+
     public MutedPlayer getMutedPlayer(UUID uuid) {
         MutedPlayer mPlayer = null;
-        for (MutedPlayer mutedPlayer : mList) {
+        for (MutedPlayer mutedPlayer : muteList) {
             if (mutedPlayer.getUUID().equals(uuid)) {
                 return mutedPlayer;
             }
@@ -264,5 +263,5 @@ public class MuteManager extends JavaPlugin {
                 .replace("%PLAYER%", mutedPlayer.getPlayerName())
                 .trim();
     }
-    
+
 }

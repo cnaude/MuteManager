@@ -14,11 +14,11 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
  *
  * @author cnaude
  */
-public class MMListeners implements Listener {
+public class MuteListeners implements Listener {
 
     private final MuteManager plugin;
 
-    public MMListeners(MuteManager instance) {
+    public MuteListeners(MuteManager instance) {
         this.plugin = instance;
     }
 
@@ -30,7 +30,7 @@ public class MMListeners implements Listener {
             if (mutedPlayer == null) {
                 return;
             }
-            event.setCancelled(true);            
+            event.setCancelled(true);
             if (!config.msgYouAreMuted().isEmpty()) {
                 player.sendMessage(plugin.tokenize(mutedPlayer, config.msgYouAreMuted()));
             }
@@ -55,7 +55,7 @@ public class MMListeners implements Listener {
                 return;
             }
             event.setCancelled(true);
-            if (!config.msgYouAreMuted().isEmpty()) {                
+            if (!config.msgYouAreMuted().isEmpty()) {
                 player.sendMessage(plugin.tokenize(mutedPlayer, config.msgYouAreMuted()));
             }
             if (plugin.getMConfig().adminListen()) {
