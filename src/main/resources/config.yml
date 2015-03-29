@@ -30,13 +30,13 @@ Messages:
   Forever: forever
   UnableToUnMute: '&eUnable to unmute &b%PLAYER%&e.'
   # %REASONTEXT%
-  Reason: ' &eReason: &a%REASON%'
+  Reason: '&eReason: &a%REASON%'
   # %DURATIONTEXT%
-  Duration: ' &eDuration: &a%DURATION%'
-  YouHaveBeenMuted: '&eYou have been muted!%DURATIONTEXT%%REASONTEXT%'
+  Duration: '&eDuration: &a%DURATION%'
+  YouHaveBeenMuted: '&eYou have been muted! %DURATIONTEXT% %REASONTEXT%'
   YouHaveBeenUnMuted: '&eYou have been unmuted!'
   NoPlayer: 'There is no player by that name online!'
-  PlayerNowMuted: '&b%PLAYER% &eis now muted!%DURATIONTEXT%%REASONTEXT%'
+  PlayerNowMuted: '&b%PLAYER% &eis now muted! %DURATIONTEXT% %REASONTEXT%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
-  YouAreMuted: '&eYou are muted!%DURATIONTEXT%%REASONTEXT%'
-  AlreadyMuted: '&b%PLAYER% &eis already muted!%DURATIONTEXT%%REASONTEXT%'
+  YouAreMuted: '&eYou are muted! %DURATIONTEXT% %REASONTEXT%'
+  AlreadyMuted: '&b%PLAYER% &eis already muted! %DURATIONTEXT% %REASONTEXT%'
