@@ -19,6 +19,13 @@ Global:
   AllowOfflineMute: false
   # Nothing to see here
   Debug: false
+# Message templates. The following tokens are supported.
+# %DURATION% - Length of the mute
+# %REASON% - Reason for the mute
+# %DURATIONTEXT%
+# %REASONTEXT%
+# %AUTHOR% - Name of the muter
+# %PLAYER% - Name of the muted player
 Messages:
   NoPermission: '&cYou do not have permission to use this command!'
   ZeroSeconds: 0 seconds
@@ -39,4 +46,3 @@ Messages:
   PlayerNowMuted: '&b%PLAYER% &eis now muted! %DURATIONTEXT% %REASONTEXT%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
   YouAreMuted: '&eYou are muted! %DURATIONTEXT% %REASONTEXT%'
-  AlreadyMuted: '&b%PLAYER% &eis already muted! %DURATIONTEXT% %REASONTEXT%'

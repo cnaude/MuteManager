@@ -112,7 +112,7 @@ public class MuteCommand implements CommandExecutor {
             }
         } else {
             for (Player player : plugin.getServer().getOnlinePlayers()) {
-                if (player.getName().equals(pName)) {
+                if (player.getName().equalsIgnoreCase(pName)) {
                     plugin.mutePlayer(player, muteTime, sender, reason);
                     return true;
                 }

@@ -73,17 +73,17 @@ public class MuteManager extends JavaPlugin {
         configLoaded = true;
     }
 
-    public void logInfo(String _message) {
-        log.log(Level.INFO, String.format("%s %s", LOG_HEADER, _message));
+    public void logInfo(String message) {
+        log.log(Level.INFO, String.format("%s %s", LOG_HEADER, message));
     }
 
-    public void logError(String _message) {
-        log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, _message));
+    public void logError(String message) {
+        log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, message));
     }
 
-    public void logDebug(String _message) {
+    public void logDebug(String message) {
         if (config.debugEnabled()) {
-            log.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, _message));
+            log.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, message));
         }
     }
 
@@ -91,19 +91,26 @@ public class MuteManager extends JavaPlugin {
         return config;
     }
 
+    public void adjustMuteDuration(MutedPlayer mutedPlayer, long expTime, String reason) {
+        mutedPlayer.setExptime(expTime);
+        mutedPlayer.setReason(reason);
+    }
+
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
         if (player.hasPermission("mutemanager.muteexempt")) {
             logDebug("Player " + player.getName() + " is exempt due to mutemanager.muteexempt.");
             return;
         }
-        if (isMuted(player)) {
-            sender.sendMessage(tokenize(getMutedPlayer(player), config.msgAlreadyMuted()));
-            return;
-        }
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
-        MutedPlayer mutedPlayer = new MutedPlayer(player, expTime, reason);
-        muteList.add(mutedPlayer);
+        MutedPlayer mutedPlayer;
+        if (isMuted(player)) {
+            mutedPlayer = getMutedPlayer(player);
+            adjustMuteDuration(mutedPlayer, expTime, reason);
+        } else {
+            mutedPlayer = new MutedPlayer(player, expTime, reason);
+            muteList.add(mutedPlayer);
+        }
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
@@ -116,13 +123,16 @@ public class MuteManager extends JavaPlugin {
     }
 
     public void mutePlayer(String player, UUID uuid, Long muteTime, CommandSender sender, String reason) {
-        if (isMuted(uuid)) {
-            sender.sendMessage(tokenize(getMutedPlayer(uuid), config.msgAlreadyMuted()));
-            return;
-        }
         long curTime = System.currentTimeMillis();
         long expTime = curTime + (muteTime * 60 * 1000);
-        MutedPlayer mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
+        MutedPlayer mutedPlayer;
+        if (isMuted(uuid)) {
+            mutedPlayer = getMutedPlayer(uuid);
+            adjustMuteDuration(mutedPlayer, expTime, reason);
+        } else {
+            mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
+            muteList.add(mutedPlayer);
+        }
         muteList.add(mutedPlayer);
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
