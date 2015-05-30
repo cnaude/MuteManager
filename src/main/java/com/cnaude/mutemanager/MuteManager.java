@@ -147,6 +147,9 @@ public class MuteManager extends JavaPlugin {
         String senderMessage = config.msgSenderUnMuted()
                 .replace("%PLAYER%", pName)
                 .replace("%AUTHOR%", sender.getName());
+        String playerMessage = config.msgYouHaveBeenUnMuted()
+                .replace("%PLAYER%", pName)
+                .replace("%AUTHOR%", sender.getName());
         boolean success = unMutePlayer(pName);
         if (success) {
             if (config.shouldNotify()) {
@@ -155,10 +158,10 @@ public class MuteManager extends JavaPlugin {
                 sender.sendMessage(senderMessage);
             }
             logInfo(pName + " has been unmuted!");
-            if (!config.msgYouHaveBeenMuted().isEmpty()) {
+            if (!playerMessage.isEmpty()) {
                 for (Player player : getServer().getOnlinePlayers()) {
-                    if (player.getName().equals(pName)) {
-                        player.sendMessage(config.msgYouHaveBeenUnMuted());
+                    if (player.getName().equalsIgnoreCase(pName)) {
+                        player.sendMessage(playerMessage);
                         break;
                     }
                 }
