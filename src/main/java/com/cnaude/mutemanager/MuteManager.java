@@ -91,9 +91,10 @@ public class MuteManager extends JavaPlugin {
         return config;
     }
 
-    public void adjustMuteDuration(MutedPlayer mutedPlayer, long expTime, String reason) {
+    public void adjustMuteDuration(MutedPlayer mutedPlayer, long expTime, String reason, CommandSender sender) {
         mutedPlayer.setExptime(expTime);
         mutedPlayer.setReason(reason);
+        mutedPlayer.setAuthor(sender);
     }
 
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
@@ -106,9 +107,9 @@ public class MuteManager extends JavaPlugin {
         MutedPlayer mutedPlayer;
         if (isMuted(player)) {
             mutedPlayer = getMutedPlayer(player);
-            adjustMuteDuration(mutedPlayer, expTime, reason);
+            adjustMuteDuration(mutedPlayer, expTime, reason, sender);
         } else {
-            mutedPlayer = new MutedPlayer(player, expTime, reason);
+            mutedPlayer = new MutedPlayer(player, expTime, reason, sender);
             muteList.add(mutedPlayer);
         }
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
@@ -128,9 +129,9 @@ public class MuteManager extends JavaPlugin {
         MutedPlayer mutedPlayer;
         if (isMuted(uuid)) {
             mutedPlayer = getMutedPlayer(uuid);
-            adjustMuteDuration(mutedPlayer, expTime, reason);
+            adjustMuteDuration(mutedPlayer, expTime, reason, sender);
         } else {
-            mutedPlayer = new MutedPlayer(player, uuid, expTime, reason);
+            mutedPlayer = new MutedPlayer(player, uuid, expTime, reason, sender);
             muteList.add(mutedPlayer);
         }
         muteList.add(mutedPlayer);

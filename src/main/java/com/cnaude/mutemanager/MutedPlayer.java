@@ -11,7 +11,7 @@ public class MutedPlayer implements Serializable {
     private final UUID uuid;
     private final String playerName;
     private Long expTime;
-    private final String author;
+    private String author;
     private String reason;
 
     public MutedPlayer(OfflinePlayer player, Long expTime, String reason) {
@@ -51,6 +51,14 @@ public class MutedPlayer implements Serializable {
     }
     public void setReason(String reason) {
         this.reason = reason;
+    }
+    
+    public void setAuthor(CommandSender sender) {
+        this.author = sender.getName();
+    }
+    
+    public void setAuthor(String sender) {
+        this.author = sender;
     }
 
     public void setExptime(long expTime) {
