@@ -44,4 +44,7 @@ permissions:
     mutemanager.muteexempt:
         description: Exempts player from being muted
         default: false
+    mutemanager.muteall:
+        description: Allows player to use * when muting
+        default: op
      

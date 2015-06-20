@@ -104,9 +104,18 @@ public class MuteCommand implements CommandExecutor {
             plugin.logDebug("M9");
             return false;
         }
+        
+        if (muteTime > plugin.getMConfig().maxTime()) {
+            sender.sendMessage(plugin.getMConfig().msgMaxReason(muteTime));
+            return true;
+        }
 
         final String pName = args[0];
         if (pName.equals("*")) {
+            if (!sender.hasPermission("mutemanager.muteall")) {
+                sender.sendMessage(plugin.getMConfig().msgNoPerm());
+                return true;
+            }
             for (Player player : plugin.getServer().getOnlinePlayers()) {
                 plugin.mutePlayer(player, muteTime, sender, reason);
             }

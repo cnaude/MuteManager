@@ -4,6 +4,8 @@ Global:
   Notify: true
   # Default mute time in minutes when not specified in mute command. (52594900 = perm)
   DefaultTime: 5
+  # Maximum mute time
+  MaxTime: 
   # Allow admins to see the muted messages
   AdminListen: false
   # Default mute reason
@@ -46,3 +48,4 @@ Messages:
   PlayerNowMuted: '&b%PLAYER% &eis now muted! %DURATIONTEXT% %REASONTEXT%'
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
   YouAreMuted: '&eYou are muted! %DURATIONTEXT% %REASONTEXT%'
+  MaxReason: 'Mute time of &a%TIME% &rminutes exceeds maximum &a%MAX% &rminutes!'

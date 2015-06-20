@@ -10,42 +10,45 @@ import org.bukkit.configuration.Configuration;
  * @author cnaude
  */
 public final class MuteConfig {
+
     private final Configuration config;
     private final MuteManager plugin;
 
-    private static final String GLOBAL_NOTIFY            = "Global.Notify";
-    private static final String DEFAULT_TIME             = "Global.DefaultTime";
-    private static final String DEFAULT_REASON           = "Global.DefaultReason";
-    private static final String ADMIN_LISTEN             = "Global.AdminListen";
-    private static final String BROADCAST_NODE           = "Global.BroadcastNode";
-    private static final String COMMANDS                 = "Global.Commands";
-    private static final String BLOCK_CMDS               = "Global.BlockCommands";
-    private static final String ALLOW_OFFLINE_MUTE       = "Global.AllowOfflineMute";
-    private static final String REQUIRE_FULL_NAME        = "Global.RequireFullName";
-    private static final String GLOBAL_DEBUG             = "Global.Debug";
+    private static final String GLOBAL_NOTIFY = "Global.Notify";
+    private static final String DEFAULT_TIME = "Global.DefaultTime";
+    private static final String MAX_TIME = "Global.MaxTime";
+    private static final String DEFAULT_REASON = "Global.DefaultReason";
+    private static final String ADMIN_LISTEN = "Global.AdminListen";
+    private static final String BROADCAST_NODE = "Global.BroadcastNode";
+    private static final String COMMANDS = "Global.Commands";
+    private static final String BLOCK_CMDS = "Global.BlockCommands";
+    private static final String ALLOW_OFFLINE_MUTE = "Global.AllowOfflineMute";
+    private static final String REQUIRE_FULL_NAME = "Global.RequireFullName";
+    private static final String GLOBAL_DEBUG = "Global.Debug";
 
-    private static final String MSG_NO_PERM               = "Messages.NoPermission";
-    private static final String MSG_ZERO_SECS             = "Messages.ZeroSeconds";
-    private static final String MSG_SECONDS               = "Messages.Seconds";
-    private static final String MSG_MINUTES               = "Messages.Minutes";
-    private static final String MSG_HOURS                 = "Messages.Hours";
-    private static final String MSG_DAYS                  = "Messages.Days";
-    private static final String MSG_YEARS                 = "Messages.Years";
-    private static final String MSG_FOREVER               = "Messages.Forever";
-    private static final String MSG_UNABLE_TO_UNMUTE      = "Messages.UnableToUnMute";
+    private static final String MSG_NO_PERM = "Messages.NoPermission";
+    private static final String MSG_ZERO_SECS = "Messages.ZeroSeconds";
+    private static final String MSG_SECONDS = "Messages.Seconds";
+    private static final String MSG_MINUTES = "Messages.Minutes";
+    private static final String MSG_HOURS = "Messages.Hours";
+    private static final String MSG_DAYS = "Messages.Days";
+    private static final String MSG_YEARS = "Messages.Years";
+    private static final String MSG_FOREVER = "Messages.Forever";
+    private static final String MSG_UNABLE_TO_UNMUTE = "Messages.UnableToUnMute";
     private static final String MSG_YOU_HAVE_BEEN_UNMUTED = "Messages.YouHaveBeenUnMuted";
-    private static final String MSG_YOU_HAVE_BEEN_MUTED   = "Messages.YouHaveBeenMuted";
-    private static final String MSG_P_NOW_MUTED           = "Messages.PlayerNowMuted";
-    private static final String MSG_P_NOW_UNMUTED         = "Messages.PlayerNowUnMuted";
-    private static final String MSG_NO_PLAYER             = "Messages.NoPlayer";
-    private static final String MSG_REASON                = "Messages.Reason";
-    private static final String MSG_DURATION                = "Messages.Duration";
-    private static final String MSG_YOU_ARE_MUTED         = "Messages.YouAreMuted";
-    private static final String MSG_ALREADY               = "Messages.AlreadyMuted";
-
+    private static final String MSG_YOU_HAVE_BEEN_MUTED = "Messages.YouHaveBeenMuted";
+    private static final String MSG_P_NOW_MUTED = "Messages.PlayerNowMuted";
+    private static final String MSG_P_NOW_UNMUTED = "Messages.PlayerNowUnMuted";
+    private static final String MSG_NO_PLAYER = "Messages.NoPlayer";
+    private static final String MSG_REASON = "Messages.Reason";
+    private static final String MSG_DURATION = "Messages.Duration";
+    private static final String MSG_YOU_ARE_MUTED = "Messages.YouAreMuted";
+    private static final String MSG_ALREADY = "Messages.AlreadyMuted";
+    private static final String MSG_MAX_REASON = "Messages.MaxReason";
 
     private boolean shouldNotify;
     private long defaultTime;
+    private long maxTime;
     private String defaultReason;
     private boolean adminListen;
     private String broadcastNode;
@@ -71,6 +74,7 @@ public final class MuteConfig {
     private String msgDuration;
     private String msgYouAreMuted;
     private String msgAlreadyMuted;
+    private String msgMaxReason;
 
     private boolean debugEnabled;
 
@@ -81,18 +85,19 @@ public final class MuteConfig {
     }
 
     public void loadValues() {
-        debugEnabled     = config.getBoolean(GLOBAL_DEBUG, false);
+        debugEnabled = config.getBoolean(GLOBAL_DEBUG, false);
 
-        shouldNotify  = config.getBoolean(GLOBAL_NOTIFY, true);
-        defaultTime   = config.getInt(DEFAULT_TIME, 5);
+        shouldNotify = config.getBoolean(GLOBAL_NOTIFY, true);
+        defaultTime = config.getInt(DEFAULT_TIME, 5);
+        maxTime = config.getInt(MAX_TIME, 52594900);
         defaultReason = config.getString(DEFAULT_REASON, "None");
-        adminListen   = config.getBoolean(ADMIN_LISTEN, false);
+        adminListen = config.getBoolean(ADMIN_LISTEN, false);
         broadcastNode = config.getString(BROADCAST_NODE, "mutemanager.listen");
-        reqFullName   = config.getBoolean(REQUIRE_FULL_NAME, false);
+        reqFullName = config.getBoolean(REQUIRE_FULL_NAME, false);
         if (config.getBoolean(BLOCK_CMDS, false)) {
             blockedCommands = config.getStringList(COMMANDS);
         }
-        allowOfflineMute  = config.getBoolean(ALLOW_OFFLINE_MUTE, false);
+        allowOfflineMute = config.getBoolean(ALLOW_OFFLINE_MUTE, false);
 
         msgNoPerm = config.getString(MSG_NO_PERM);
         msgZeroSeconds = config.getString(MSG_ZERO_SECS);
@@ -112,6 +117,7 @@ public final class MuteConfig {
         msgDuration = config.getString(MSG_DURATION);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
         msgAlreadyMuted = config.getString(MSG_ALREADY);
+        msgMaxReason = config.getString(MSG_MAX_REASON);
 
     }
 
@@ -121,6 +127,10 @@ public final class MuteConfig {
 
     public Long defaultTime() {
         return defaultTime;
+    }
+
+    public Long maxTime() {
+        return maxTime;
     }
 
     public String defaultReason() {
@@ -217,6 +227,12 @@ public final class MuteConfig {
 
     public String msgAlreadyMuted() {
         return ChatColor.translateAlternateColorCodes(('&'), msgAlreadyMuted);
+    }
+
+    public String msgMaxReason(long muteTime) {
+        return ChatColor.translateAlternateColorCodes(('&'), msgMaxReason
+                .replace("%MAX%", String.valueOf(maxTime))
+                .replace("%TIME%", String.valueOf(muteTime)));
     }
 
     public boolean debugEnabled() {
