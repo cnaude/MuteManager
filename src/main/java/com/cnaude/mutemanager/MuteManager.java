@@ -114,8 +114,10 @@ public class MuteManager extends JavaPlugin {
         }
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
+            logDebug("Notifying users [" + muteBroadcastPermNode + "]: " + senderMessage);
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
+            logDebug("Notifying user [" + sender.getName() + "]: " + senderMessage);
             sender.sendMessage(senderMessage);
         }
         if (!config.msgYouHaveBeenMuted().isEmpty()) {
@@ -137,8 +139,10 @@ public class MuteManager extends JavaPlugin {
         muteList.add(mutedPlayer);
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
+            logDebug("Notifying users [" + muteBroadcastPermNode + "]: " + senderMessage);
             getServer().broadcast(senderMessage, muteBroadcastPermNode);
         } else {
+            logDebug("Notifying users [" + sender.getName() + "]: " + senderMessage);
             sender.sendMessage(senderMessage);
         }
     }
@@ -153,8 +157,10 @@ public class MuteManager extends JavaPlugin {
         boolean success = unMutePlayer(pName);
         if (success) {
             if (config.shouldNotify()) {
+                logDebug("Notifying users [" + unMuteBroadcastPermNode + "]: " + senderMessage);
                 getServer().broadcast(senderMessage, unMuteBroadcastPermNode);
             } else {
+                logDebug("Notifying users [" + sender.getName() + "]: " + senderMessage);
                 sender.sendMessage(senderMessage);
             }
             logInfo(pName + " has been unmuted!");
