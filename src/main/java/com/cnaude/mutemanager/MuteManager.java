@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -25,8 +26,8 @@ public class MuteManager extends JavaPlugin {
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
     static final Logger log = Logger.getLogger("Minecraft");
     private final MuteFile muteFile = new MuteFile(this);
-    private final String muteBroadcastPermNode = "mutemanager.mutenotify";
-    private final String unMuteBroadcastPermNode = "mutemanager.unmutenotify";
+    private final String MUTE_NOTIFY_PERM = "mutemanager.mutenotify";
+    private final String UNMUTE_NOTIFY_PERM = "mutemanager.unmutenotify";
     MuteLoop muteLoop;
 
     @Override
@@ -114,8 +115,8 @@ public class MuteManager extends JavaPlugin {
         }
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
-            logDebug("Notifying users [" + muteBroadcastPermNode + "]: " + senderMessage);
-            getServer().broadcast(senderMessage, muteBroadcastPermNode);
+            logDebug("Notifying users [" + MUTE_NOTIFY_PERM + "]: " + senderMessage);
+            sendNotification(senderMessage, MUTE_NOTIFY_PERM);
         } else {
             logDebug("Notifying user [" + sender.getName() + "]: " + senderMessage);
             sender.sendMessage(senderMessage);
@@ -139,8 +140,8 @@ public class MuteManager extends JavaPlugin {
         muteList.add(mutedPlayer);
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
-            logDebug("Notifying users [" + muteBroadcastPermNode + "]: " + senderMessage);
-            getServer().broadcast(senderMessage, muteBroadcastPermNode);
+            logDebug("Notifying users [" + MUTE_NOTIFY_PERM + "]: " + senderMessage);
+            sendNotification(senderMessage, MUTE_NOTIFY_PERM);
         } else {
             logDebug("Notifying users [" + sender.getName() + "]: " + senderMessage);
             sender.sendMessage(senderMessage);
@@ -157,10 +158,10 @@ public class MuteManager extends JavaPlugin {
         boolean success = unMutePlayer(pName);
         if (success) {
             if (config.shouldNotify()) {
-                logDebug("Notifying users [" + unMuteBroadcastPermNode + "]: " + senderMessage);
-                getServer().broadcast(senderMessage, unMuteBroadcastPermNode);
+                logDebug("Notifying users [" + UNMUTE_NOTIFY_PERM + "]: " + senderMessage);
+                sendNotification(senderMessage, UNMUTE_NOTIFY_PERM);
             } else {
-                logDebug("Notifying users [" + sender.getName() + "]: " + senderMessage);
+                logDebug("Notifying user [" + sender.getName() + "]: " + senderMessage);
                 sender.sendMessage(senderMessage);
             }
             logInfo(pName + " has been unmuted!");
@@ -282,6 +283,16 @@ public class MuteManager extends JavaPlugin {
                 .replace("%AUTHOR%", mutedPlayer.getAuthor())
                 .replace("%PLAYER%", mutedPlayer.getPlayerName())
                 .trim();
+    }
+
+    private void sendNotification(String message, String perm) {
+        Bukkit.getConsoleSender().sendMessage(message);
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            logDebug("[p: " + player.getName() + "] [" + perm + ": " + player.hasPermission(perm) + "]");
+            if (player.hasPermission(perm)) {
+                player.sendMessage(message);
+            }
+        }
     }
 
 }
