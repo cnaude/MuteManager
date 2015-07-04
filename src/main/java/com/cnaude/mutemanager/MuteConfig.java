@@ -43,7 +43,6 @@ public final class MuteConfig {
     private static final String MSG_REASON = "Messages.Reason";
     private static final String MSG_DURATION = "Messages.Duration";
     private static final String MSG_YOU_ARE_MUTED = "Messages.YouAreMuted";
-    private static final String MSG_ALREADY = "Messages.AlreadyMuted";
     private static final String MSG_MAX_REASON = "Messages.MaxReason";
 
     private boolean shouldNotify;
@@ -73,7 +72,6 @@ public final class MuteConfig {
     private String msgReason;
     private String msgDuration;
     private String msgYouAreMuted;
-    private String msgAlreadyMuted;
     private String msgMaxReason;
 
     private boolean debugEnabled;
@@ -116,7 +114,6 @@ public final class MuteConfig {
         msgReason = config.getString(MSG_REASON);
         msgDuration = config.getString(MSG_DURATION);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
-        msgAlreadyMuted = config.getString(MSG_ALREADY);
         msgMaxReason = config.getString(MSG_MAX_REASON);
 
     }
@@ -223,10 +220,6 @@ public final class MuteConfig {
 
     public String msgYouAreMuted() {
         return ChatColor.translateAlternateColorCodes(('&'), msgYouAreMuted);
-    }
-
-    public String msgAlreadyMuted() {
-        return ChatColor.translateAlternateColorCodes(('&'), msgAlreadyMuted);
     }
 
     public String msgMaxReason(long muteTime) {
