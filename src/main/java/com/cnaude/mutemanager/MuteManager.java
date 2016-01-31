@@ -236,7 +236,7 @@ public class MuteManager extends JavaPlugin {
         for (String s2 : s) {
             joined = joined + " " + s2;
         }
-        return joined.substring(1);
+        return joined.substring(1).toLowerCase();
     }
 
     public boolean isBlockedCmd(String[] cmd) {
