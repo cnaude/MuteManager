@@ -24,7 +24,7 @@ public class MuteManager extends JavaPlugin {
     public static MuteConfig config;
     public static final String PLUGIN_NAME = "MuteManager";
     public static final String LOG_HEADER = "[" + PLUGIN_NAME + "]";
-    static final Logger log = Logger.getLogger("Minecraft");
+    static final Logger LOG = Logger.getLogger("Minecraft");
     private final MuteFile muteFile = new MuteFile(this);
     private final String MUTE_NOTIFY_PERM = "mutemanager.mutenotify";
     private final String UNMUTE_NOTIFY_PERM = "mutemanager.unmutenotify";
@@ -75,16 +75,16 @@ public class MuteManager extends JavaPlugin {
     }
 
     public void logInfo(String message) {
-        log.log(Level.INFO, String.format("%s %s", LOG_HEADER, message));
+        LOG.log(Level.INFO, String.format("%s %s", LOG_HEADER, message));
     }
 
     public void logError(String message) {
-        log.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, message));
+        LOG.log(Level.SEVERE, String.format("%s %s", LOG_HEADER, message));
     }
 
     public void logDebug(String message) {
         if (config.debugEnabled()) {
-            log.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, message));
+            LOG.log(Level.INFO, String.format("%s [DEBUG] %s", LOG_HEADER, message));
         }
     }
 
@@ -230,10 +230,22 @@ public class MuteManager extends JavaPlugin {
         }
         return false;
     }
+    
+    public String splitAndJoin(String[] s) {
+        String joined = "";
+        for (String s2 : s) {
+            joined = joined + " " + s2;
+        }
+        return joined.substring(1);
+    }
 
-    public boolean isBlockedCmd(String cmd) {
+    public boolean isBlockedCmd(String[] cmd) {
+        String joinedCommand = splitAndJoin(cmd);
+        logDebug("joinedCommand: " + joinedCommand);
         for (String s : getMConfig().blockedCmds()) {
-            if (s.equalsIgnoreCase(cmd)) {
+            String joinedBlock = splitAndJoin(s.split(" "));
+            logDebug("joinedBlock: " + joinedBlock);           
+            if (joinedCommand.startsWith(joinedBlock)) {
                 return true;
             }
         }

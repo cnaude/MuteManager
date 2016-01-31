@@ -48,8 +48,7 @@ public class MuteListeners implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
-        String attemptedCmd = event.getMessage().split(" ")[0];
-        if (plugin.isMuted(player) && plugin.isBlockedCmd(attemptedCmd)) {
+        if (plugin.isMuted(player) && plugin.isBlockedCmd(event.getMessage().split(" "))) {
             MutedPlayer mutedPlayer = plugin.getMutedPlayer(player);
             if (mutedPlayer == null) {
                 return;
