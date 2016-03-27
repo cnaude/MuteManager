@@ -29,13 +29,13 @@ public class MuteManager extends JavaPlugin {
     private final String MUTE_NOTIFY_PERM = "mutemanager.mutenotify";
     private final String UNMUTE_NOTIFY_PERM = "mutemanager.unmutenotify";
     MuteLoop muteLoop;
-    MuteDBConnection muteDb = null;
+    MuteDatabase muteDb = null;
 
     @Override
     public void onEnable() {
         loadConfig(null);
         if (getMConfig().dbEnabled()) {
-            muteDb = new MuteDBConnection(this);
+            muteDb = new MuteDatabase(this);
         }
         if (muteDb == null) {
             muteFile.loadMuteList();

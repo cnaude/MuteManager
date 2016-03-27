@@ -13,7 +13,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author cnaude
  */
-public class MuteDBConnection {
+public class MuteDatabase {
 
     private final MuteConfig config;
     private final MuteManager plugin;
@@ -24,7 +24,7 @@ public class MuteDBConnection {
             + ", `expTime` DOUBLE NOT NULL , `author` VARCHAR(256) NOT NULL "
             + ", `reason` VARCHAR(2048) NOT NULL )";
 
-    public MuteDBConnection(MuteManager instance) {
+    public MuteDatabase(MuteManager instance) {
         plugin = instance;
         config = plugin.getMConfig();
 
