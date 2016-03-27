@@ -45,6 +45,14 @@ public class MutedPlayer implements Serializable {
         this.author = sender.getName();
         this.reason = reason;
     }
+    
+    public MutedPlayer(String playerName, UUID uuid, Long expTime, String reason, String author) {
+        this.uuid = uuid;
+        this.playerName = playerName;
+        this.expTime = expTime;
+        this.author = author;
+        this.reason = reason;
+    }
 
     public String getReason() {
         return reason;

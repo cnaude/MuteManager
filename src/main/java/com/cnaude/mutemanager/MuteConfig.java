@@ -44,6 +44,12 @@ public final class MuteConfig {
     private static final String MSG_DURATION = "Messages.Duration";
     private static final String MSG_YOU_ARE_MUTED = "Messages.YouAreMuted";
     private static final String MSG_MAX_REASON = "Messages.MaxReason";
+    
+    private static final String DB_ENABLED = "Database.Enabled";
+    private static final String DB_USER = "Database.User";
+    private static final String DB_PASS = "Database.Pass";
+    private static final String DB_URL = "Database.Url";
+    private static final String DB_DRIVER = "Database.Driver";    
 
     private boolean shouldNotify;
     private long defaultTime;
@@ -73,6 +79,12 @@ public final class MuteConfig {
     private String msgDuration;
     private String msgYouAreMuted;
     private String msgMaxReason;
+    
+    private String dbUser;
+    private String dbPass;
+    private String dbUrl;
+    private String dbDriver;
+    private boolean dbEnabled;
 
     private boolean debugEnabled;
 
@@ -115,6 +127,12 @@ public final class MuteConfig {
         msgDuration = config.getString(MSG_DURATION);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
         msgMaxReason = config.getString(MSG_MAX_REASON);
+        
+        dbUser = config.getString(DB_USER);
+        dbPass = config.getString(DB_PASS);
+        dbUrl = config.getString(DB_URL);
+        dbDriver = config.getString(DB_DRIVER);
+        dbEnabled = config.getBoolean(DB_ENABLED);
 
     }
 
@@ -226,6 +244,26 @@ public final class MuteConfig {
         return ChatColor.translateAlternateColorCodes(('&'), msgMaxReason
                 .replace("%MAX%", String.valueOf(maxTime))
                 .replace("%TIME%", String.valueOf(muteTime)));
+    }
+    
+    protected String dbUser() {
+        return dbUser;
+    }
+    
+    protected String dbPass() {
+        return dbPass;
+    }
+    
+    protected String dbUrl() {
+        return dbUrl;
+    }
+    
+    protected String dbDriver() {
+        return dbDriver;
+    }
+    
+    protected boolean dbEnabled() {
+        return dbEnabled;
     }
 
     public boolean debugEnabled() {

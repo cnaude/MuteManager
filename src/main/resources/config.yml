@@ -49,3 +49,9 @@ Messages:
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
   YouAreMuted: '&eYou are muted! %DURATIONTEXT% %REASONTEXT%'
   MaxReason: 'Mute time of &a%TIME% &rminutes exceeds maximum &a%MAX% &rminutes!'
+Database:
+  Enabled: false
+  User: USERNAME
+  Pass: PASSWORD
+  Url: jdbc:mysql://localhost/mutemanager
+  Driver: com.mysql.jdbc.Driver

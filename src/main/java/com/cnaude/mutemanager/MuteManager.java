@@ -29,11 +29,17 @@ public class MuteManager extends JavaPlugin {
     private final String MUTE_NOTIFY_PERM = "mutemanager.mutenotify";
     private final String UNMUTE_NOTIFY_PERM = "mutemanager.unmutenotify";
     MuteLoop muteLoop;
+    MuteDBConnection muteDb = null;
 
     @Override
     public void onEnable() {
         loadConfig(null);
-        muteFile.loadMuteList();
+        if (getMConfig().dbEnabled()) {
+            muteDb = new MuteDBConnection(this);
+        }
+        if (muteDb == null) {
+            muteFile.loadMuteList();
+        }
         getCommand("mute").setExecutor(new MuteCommand(this));
         getCommand("unmute").setExecutor(new UnMuteCommand(this));
         getCommand("mutelist").setExecutor(new MuteListCommand(this));
@@ -45,7 +51,9 @@ public class MuteManager extends JavaPlugin {
     @Override
     public void onDisable() {
         muteLoop.end();
-        muteFile.saveMuteList();
+        if (muteDb == null) {
+            muteFile.saveMuteList();
+        }
         muteList.clear();
     }
 
@@ -96,6 +104,29 @@ public class MuteManager extends JavaPlugin {
         mutedPlayer.setExptime(expTime);
         mutedPlayer.setReason(reason);
         mutedPlayer.setAuthor(sender);
+        if (muteDb != null) {
+            muteDb.update(mutedPlayer, expTime, reason, sender);
+        }
+    }
+
+    public void addMute(MutedPlayer mutedPlayer) {
+        muteList.add(mutedPlayer);
+        if (muteDb != null) {
+            muteDb.add(mutedPlayer);
+        }
+    }
+
+    public void delMute(MutedPlayer mutedPlayer) {
+        muteList.remove(mutedPlayer);
+        if (muteDb != null) {
+            muteDb.rem(mutedPlayer);
+        }
+    }
+
+    public void delMute(String p) {
+        if (muteDb != null) {
+            muteDb.rem(p);
+        }
     }
 
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
@@ -111,7 +142,7 @@ public class MuteManager extends JavaPlugin {
             adjustMuteDuration(mutedPlayer, expTime, reason, sender);
         } else {
             mutedPlayer = new MutedPlayer(player, expTime, reason, sender);
-            muteList.add(mutedPlayer);
+            addMute(mutedPlayer);
         }
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
@@ -135,9 +166,9 @@ public class MuteManager extends JavaPlugin {
             adjustMuteDuration(mutedPlayer, expTime, reason, sender);
         } else {
             mutedPlayer = new MutedPlayer(player, uuid, expTime, reason, sender);
-            muteList.add(mutedPlayer);
+            addMute(mutedPlayer);
         }
-        muteList.add(mutedPlayer);
+        addMute(mutedPlayer);
         String senderMessage = tokenize(mutedPlayer, config.msgPlayerNowMuted());
         if (config.shouldNotify()) {
             logDebug("Notifying users [" + MUTE_NOTIFY_PERM + "]: " + senderMessage);
@@ -190,6 +221,7 @@ public class MuteManager extends JavaPlugin {
         }
         if (idx >= 0) {
             muteList.remove(idx);
+            delMute(p);
             return true;
         }
         return false;
@@ -198,7 +230,7 @@ public class MuteManager extends JavaPlugin {
     public boolean unMutePlayer(MutedPlayer mutedPlayer) {
         logDebug("Unmuting: " + mutedPlayer.getPlayerName());
         if (muteList.contains(mutedPlayer)) {
-            muteList.remove(mutedPlayer);
+            delMute(mutedPlayer);
             return true;
         }
         return false;
@@ -230,7 +262,7 @@ public class MuteManager extends JavaPlugin {
         }
         return false;
     }
-    
+
     public String splitAndJoin(String[] s) {
         String joined = "";
         for (String s2 : s) {
@@ -244,7 +276,7 @@ public class MuteManager extends JavaPlugin {
         logDebug("joinedCommand: " + joinedCommand);
         for (String s : getMConfig().blockedCmds()) {
             String joinedBlock = splitAndJoin(s.split(" "));
-            logDebug("joinedBlock: " + joinedBlock);           
+            logDebug("joinedBlock: " + joinedBlock);
             if (joinedCommand.startsWith(joinedBlock)) {
                 return true;
             }
