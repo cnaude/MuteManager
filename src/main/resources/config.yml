@@ -49,6 +49,7 @@ Messages:
   PlayerNowUnMuted: '&b%PLAYER% &ehas been unmuted!'
   YouAreMuted: '&eYou are muted! %DURATIONTEXT% %REASONTEXT%'
   MaxReason: 'Mute time of &a%TIME% &rminutes exceeds maximum &a%MAX% &rminutes!'
+  Exempt: '&b%PLAYER% &eis exempt from mute!'
 Database:
   Enabled: false
   User: USERNAME

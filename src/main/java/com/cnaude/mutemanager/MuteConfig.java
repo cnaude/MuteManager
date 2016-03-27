@@ -44,6 +44,7 @@ public final class MuteConfig {
     private static final String MSG_DURATION = "Messages.Duration";
     private static final String MSG_YOU_ARE_MUTED = "Messages.YouAreMuted";
     private static final String MSG_MAX_REASON = "Messages.MaxReason";
+    private static final String MSG_EXEMPT = "Messages.Exempt";
     
     private static final String DB_ENABLED = "Database.Enabled";
     private static final String DB_USER = "Database.User";
@@ -79,6 +80,7 @@ public final class MuteConfig {
     private String msgDuration;
     private String msgYouAreMuted;
     private String msgMaxReason;
+    private String msgExempt;
     
     private String dbUser;
     private String dbPass;
@@ -127,6 +129,7 @@ public final class MuteConfig {
         msgDuration = config.getString(MSG_DURATION);
         msgYouAreMuted = config.getString(MSG_YOU_ARE_MUTED);
         msgMaxReason = config.getString(MSG_MAX_REASON);
+        msgExempt = config.getString(MSG_EXEMPT);
         
         dbUser = config.getString(DB_USER);
         dbPass = config.getString(DB_PASS);
@@ -244,6 +247,10 @@ public final class MuteConfig {
         return ChatColor.translateAlternateColorCodes(('&'), msgMaxReason
                 .replace("%MAX%", String.valueOf(maxTime))
                 .replace("%TIME%", String.valueOf(muteTime)));
+    }
+    
+    public String msgExempt() {
+        return ChatColor.translateAlternateColorCodes(('&'), msgExempt);
     }
     
     protected String dbUser() {

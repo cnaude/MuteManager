@@ -131,6 +131,9 @@ public class MuteManager extends JavaPlugin {
 
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
         if (player.hasPermission("mutemanager.muteexempt")) {
+            if (!config.msgExempt().isEmpty()) {
+                sender.sendMessage(config.msgExempt().replace("%PLAYER%",player.getDisplayName()));
+            }
             logDebug("Player " + player.getName() + " is exempt due to mutemanager.muteexempt.");
             return;
         }
