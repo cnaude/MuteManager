@@ -43,6 +43,7 @@ public class MuteDatabase {
                     Class.forName(config.dbDriver());
                 } catch (ClassNotFoundException ex) {
                     plugin.logError(ex.getMessage());
+                    return;
                 }
 
                 try {
@@ -50,6 +51,7 @@ public class MuteDatabase {
                     conn = DriverManager.getConnection(config.dbUrl(), config.dbUser(), config.dbPass());
                 } catch (SQLException ex) {
                     plugin.logError(ex.getMessage());
+                    return;
                 }
 
                 try {
@@ -58,6 +60,7 @@ public class MuteDatabase {
                     stmt.execute(SQL_CREATE);
                 } catch (SQLException ex) {
                     plugin.logError(ex.getMessage());
+                    return;
                 }
                 if (conn != null) {
                     loadMuteList();
