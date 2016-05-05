@@ -19,7 +19,7 @@ public class MuteDatabase {
     private final MuteManager plugin;
     Connection conn = null;
 
-    private final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS `mutemanager`.`mutedPlayers`"
+    private final String SQL_CREATE = "CREATE TABLE IF NOT EXISTS `mutedPlayers`"
             + "( `uuid` CHAR(36) NOT NULL , `playerName` VARCHAR(256) NOT NULL "
             + ", `expTime` DOUBLE NOT NULL , `author` VARCHAR(256) NOT NULL "
             + ", `reason` VARCHAR(2048) NOT NULL )";
