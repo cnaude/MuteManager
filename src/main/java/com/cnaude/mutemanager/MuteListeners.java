@@ -54,6 +54,7 @@ public class MuteListeners implements Listener {
                 return;
             }
             event.setCancelled(true);
+            plugin.logDebug("Blocking command: " + event.getMessage());
             if (!config.msgYouAreMuted().isEmpty()) {
                 player.sendMessage(plugin.tokenize(mutedPlayer, config.msgYouAreMuted()));
             }
@@ -63,6 +64,8 @@ public class MuteListeners implements Listener {
                 bCastMessage = bCastMessage + ChatColor.GRAY + event.getMessage();
                 Bukkit.getServer().broadcast(bCastMessage, plugin.getMConfig().broadcastNode());
             }
+        } else {
+            plugin.logDebug("Not blocking command: " + event.getMessage());
         }
     }
 }
