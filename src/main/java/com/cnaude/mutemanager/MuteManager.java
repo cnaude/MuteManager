@@ -132,7 +132,7 @@ public class MuteManager extends JavaPlugin {
     public void mutePlayer(Player player, Long muteTime, CommandSender sender, String reason) {
         if (player.hasPermission("mutemanager.muteexempt")) {
             if (!config.msgExempt().isEmpty()) {
-                sender.sendMessage(config.msgExempt().replace("%PLAYER%",player.getDisplayName()));
+                sender.sendMessage(config.msgExempt().replace("%PLAYER%", player.getDisplayName()));
             }
             logDebug("Player " + player.getName() + " is exempt due to mutemanager.muteexempt.");
             return;
@@ -280,7 +280,8 @@ public class MuteManager extends JavaPlugin {
         for (String s : getMConfig().blockedCmds()) {
             String joinedBlock = splitAndJoin(s.split(" "));
             logDebug("joinedBlock: " + joinedBlock);
-            if (joinedCommand.startsWith(joinedBlock)) {
+            if (joinedCommand.equalsIgnoreCase(joinedBlock)
+                    || joinedCommand.startsWith(joinedBlock + " ")) {
                 return true;
             }
         }
