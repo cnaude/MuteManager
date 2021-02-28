@@ -6,7 +6,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Bukkit API Version, change if out dated -->
-        <bukkit.version>1.16.4</bukkit.version>
+        <bukkit.version>1.16.5-R0.1-SNAPSHOT</bukkit.version>
         <build.number>SNAPSHOT</build.number>
     </properties>
 
@@ -15,46 +15,33 @@
     <version>0.16-${build.number}</version>
     <name>MuteManager</name>
     <description>Mute players in Minecraft.</description>
-    <url>http://dev.bukkit.org/server-mods/mutemanager/</url>
+    <url>https://dev.bukkit.org/projects/mutemanager/</url>
 
     <repositories>
         <repository>
-            <id>cnaude-repo</id>
-            <url>http://repo.chrisnaude.com/</url>
-        </repository>
-        
-        <repository>
-            <id>sonatype-nexus-public</id>
-            <name>SonaType public snapshots and releases repository</name>
-            <url>https://oss.sonatype.org/content/groups/public</url>
-            <releases> 
-                <!-- set to true if you wish to fetch releases from this repo too. -->
-                <enabled>false</enabled>
-            </releases> 
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <id>maven-central</id>
+            <name>Maven Central</name>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
     </repositories>
     
     <dependencies>
-        <dependency>
-            <groupId>org.bukkit</groupId>
+         <!--This adds the Spigot API artifact to the build -->
+         <dependency>
+            <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>${bukkit.version}</version>
-            <type>jar</type>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        
-        <!-- Following dependency is provided by CraftBukkit -->
+         </dependency>
+ 
+        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>19.0</version>
-            <type>jar</type>
-            <scope>provided</scope>
+            <version>30.1-jre</version>
         </dependency>
         
+        <!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
@@ -63,16 +50,15 @@
 
         <!-- Testing only -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.1</version>
-            <type>jar</type>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.7.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.carrotsearch</groupId>
             <artifactId>junit-benchmarks</artifactId>
-            <version>0.4.0</version>
+            <version>0.7.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -103,15 +89,15 @@
                 <version>3.5.1</version>
                 <configuration>
                     <!-- Minimum Minecraft requirement -->
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>2.4.3</version>
+                <version>3.2.4</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
