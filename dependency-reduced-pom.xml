@@ -5,7 +5,7 @@
   <artifactId>MuteManager</artifactId>
   <name>MuteManager</name>
   <version>0.16-${build.number}</version>
-  <description>CraftBukkit plugin that allows admins to mute players.</description>
+  <description>Mute players in Minecraft.</description>
   <url>http://dev.bukkit.org/server-mods/mutemanager/</url>
   <build>
     <resources>
@@ -26,7 +26,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>3.5.1</version>
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
@@ -59,39 +59,12 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>run</goal>
-            </goals>
-            <configuration>
-              <tasks>
-                <copy />
-                <exec>
-                  <arg />
-                </exec>
-                <exec>
-                  <arg />
-                </exec>
-              </tasks>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
   <repositories>
     <repository>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-      <snapshots />
-      <id>sonatype-nexus-public</id>
-      <name>SonaType public snapshots and releases repository</name>
-      <url>https://oss.sonatype.org/content/groups/public</url>
+      <id>cnaude-repo</id>
+      <url>http://repo.chrisnaude.com/</url>
     </repository>
     <repository>
       <releases>
@@ -100,32 +73,23 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/groups/public/</url>
-    </repository>
-    <repository>
-      <id>cnaude-repo</id>
-      <url>http://cnaude.freeshell.org/repo/</url>
+      <id>sonatype-nexus-public</id>
+      <name>SonaType public snapshots and releases repository</name>
+      <url>https://oss.sonatype.org/content/groups/public</url>
     </repository>
   </repositories>
   <dependencies>
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.9</version>
+      <version>1.16.4</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>10.0.1</version>
+      <version>19.0</version>
       <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <artifactId>jsr305</artifactId>
-          <groupId>com.google.code.findbugs</groupId>
-        </exclusion>
-      </exclusions>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
@@ -157,9 +121,9 @@
     </snapshotRepository>
   </distributionManagement>
   <properties>
-    <build.number>SNAPSHOT</build.number>
+    <bukkit.version>1.16.4</bukkit.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <bukkit.version>1.9</bukkit.version>
+    <build.number>SNAPSHOT</build.number>
   </properties>
 </project>
 

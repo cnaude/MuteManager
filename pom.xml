@@ -6,7 +6,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Bukkit API Version, change if out dated -->
-        <bukkit.version>1.11</bukkit.version>
+        <bukkit.version>1.16.4</bukkit.version>
         <build.number>SNAPSHOT</build.number>
     </properties>
 
@@ -19,6 +19,11 @@
 
     <repositories>
         <repository>
+            <id>cnaude-repo</id>
+            <url>http://repo.chrisnaude.com/</url>
+        </repository>
+        
+        <repository>
             <id>sonatype-nexus-public</id>
             <name>SonaType public snapshots and releases repository</name>
             <url>https://oss.sonatype.org/content/groups/public</url>
@@ -27,25 +32,8 @@
                 <enabled>false</enabled>
             </releases> 
             <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository> 
-        
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/content/groups/public/</url>
-            <snapshots>
                 <enabled>false</enabled>
             </snapshots>
-            <releases> 
-                <!-- set to true if you wish to fetch releases from this repo too. -->
-                <enabled>false</enabled>
-            </releases> 
-        </repository>
-        
-        <repository>
-            <id>cnaude-repo</id>
-            <url>http://cnaude.freeshell.org/repo/</url>
         </repository>
     </repositories>
     
@@ -57,7 +45,7 @@
             <type>jar</type>
             <scope>provided</scope>
         </dependency>
-
+        
         <!-- Following dependency is provided by CraftBukkit -->
         <dependency>
             <groupId>com.google.guava</groupId>
