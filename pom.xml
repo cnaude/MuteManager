@@ -18,6 +18,11 @@
     <url>https://dev.bukkit.org/projects/mutemanager/</url>
 
     <repositories>
+        <!-- This adds the Spigot Maven repository to the build -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
         <repository>
             <id>maven-central</id>
             <name>Maven Central</name>
