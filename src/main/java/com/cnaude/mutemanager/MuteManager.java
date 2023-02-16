@@ -142,7 +142,11 @@ public class MuteManager extends JavaPlugin {
         MutedPlayer mutedPlayer;
         if (isMuted(player)) {
             mutedPlayer = getMutedPlayer(player);
-            adjustMuteDuration(mutedPlayer, expTime, reason, sender);
+            if (mutedPlayer == null) {
+                mutedPlayer = new MutedPlayer(player, expTime, reason, sender);
+            } else {
+                adjustMuteDuration(mutedPlayer, expTime, reason, sender);
+            }
         } else {
             mutedPlayer = new MutedPlayer(player, expTime, reason, sender);
             addMute(mutedPlayer);
